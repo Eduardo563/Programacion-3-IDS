@@ -47,7 +47,6 @@ public class Ventana2 extends JFrame{
 		//etiqueta1.setLocation(160, 200);
 		etiqueta1.setBackground(Color.ORANGE);
 		etiqueta1.setHorizontalAlignment(JLabel.CENTER);
-		etiqueta1.setVerticalAlignment(JLabel.CENTER);
 		etiqueta1.setFont(etiquetas);
 		etiqueta1.setOpaque(true);
 		
