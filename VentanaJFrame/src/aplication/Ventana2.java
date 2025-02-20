@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -40,7 +42,8 @@ public class Ventana2 extends JFrame{
 		this.setResizable(true);
 		this.setLayout(null);
 		//this.add(this.login());
-		this.add(this.registro());
+		//this.add(this.registro());
+		this.add(this.tabla());
 		
 		this.repaint();
 	}
@@ -142,6 +145,7 @@ public class Ventana2 extends JFrame{
 	}
 	
 	public JPanel registro() {
+
 		
 		//Creacion del panel
 		JPanel registro = new JPanel();
@@ -277,4 +281,105 @@ public class Ventana2 extends JFrame{
 		
 	}
 
+	public JPanel tabla() {
+		
+		//Creacion del panel
+		JPanel tabla = new JPanel();
+		tabla.setLayout(null);
+		tabla.setLocation(0, 0);
+		tabla.setSize(800, 500);
+		tabla.setOpaque(true);
+		tabla.setBackground(new Color (164, 164, 163));
+		tabla.setVisible(true);
+		
+		//Label para el texto tabla
+		JLabel etiqueta1 = new JLabel("Usuarios");
+		etiqueta1.setBounds(330, 30, 140, 35);
+		etiqueta1.setHorizontalAlignment(JLabel.CENTER);
+		etiqueta1.setFont(Titulo);
+		etiqueta1.setBackground(Color.ORANGE);
+		etiqueta1.setOpaque(true);
+		tabla.add(etiqueta1);
+		
+		JLabel nUsuarios = new JLabel("Total de usuarios");
+		nUsuarios.setBounds(100, 80, 200, 40);
+		nUsuarios.setHorizontalAlignment(JLabel.CENTER);
+		nUsuarios.setFont(Titulo);
+		tabla.add(nUsuarios);
+		
+		JLabel num = new JLabel("96");
+		num.setBounds(100, 100, 200, 60);
+		num.setHorizontalAlignment(JLabel.CENTER);
+		num.setFont(Titulo);
+		num.setBackground(Color.ORANGE);
+		tabla.add(num);
+		
+		//Label para un recuadro con fondo
+		JLabel fondo = new JLabel();
+		fondo.setBounds(100, 70, 200, 80);
+		fondo.setHorizontalAlignment(JLabel.CENTER);
+		fondo.setFont(Titulo);
+		fondo.setBackground(new Color(187, 174, 157));
+		fondo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+		fondo.setOpaque(true);
+		tabla.add(fondo);
+		
+		JButton export = new JButton("Exportar");
+		export.setBounds(500, 100, 100, 40);
+		tabla.add(export);
+		
+		JButton añadir = new JButton("Añadir");
+		añadir.setBounds(610, 100, 100, 40);
+		tabla.add(añadir);
+		
+		
+		//Arreglo de los titulos de la tabla
+		String [] columName = {
+				"Nombre",
+				"Apellido",
+				"Game",
+				"Age",
+				"Vegeterian"
+		};
+		
+		Object [] [] data = {
+				{"Kathy","Smith","Snowboarding",1995,true},
+				{"John","Dou","Rowing",1997,true},
+				{"Sue","Black","Knitting",2002,false},
+				{"Jane","White","Speed Reading",2001,true},
+				{"Sergio","Olachea","Basketball",2004,false},
+				{"Kathy","Smith","Snowboarding",1995,true},
+				{"John","Dou","Rowing",1997,true},
+				{"Sue","Black","Knitting",2002,false},
+				{"Jane","White","Speed Reading",2001,true},
+				{"Sergio","Olachea","Basketball",2004,false},
+				{"Kathy","Smith","Snowboarding",1995,true},
+				{"John","Dou","Rowing",1997,true},
+				{"Sue","Black","Knitting",2002,false},
+				{"Jane","White","Speed Reading",2001,true},
+				{"Sergio","Olachea","Basketball",2004,false},
+				{"Kathy","Smith","Snowboarding",1995,true},
+				{"John","Dou","Rowing",1997,true},
+				{"Sue","Black","Knitting",2002,false},
+				{"Jane","White","Speed Reading",2001,true},
+				{"Sergio","Olachea","Basketball",2004,false},
+				{"Kathy","Smith","Snowboarding",1995,true},
+				{"John","Dou","Rowing",1997,true},
+				{"Sue","Black","Knitting",2002,false},
+				{"Jane","White","Speed Reading",2001,true},
+				{"Sergio","Olachea","Basketball",2004,false},
+				{"Kathy","Smith","Snowboarding",1995,true},
+				{"John","Dou","Rowing",1997,true},
+				{"Sue","Black","Knitting",2002,false},
+				{"Jane","White","Speed Reading",2001,true},
+				{"Sergio","Olachea","Basketball",2004,false},
+		};
+		JTable tablaInfo = new JTable(data,columName);
+		JScrollPane scrollPane = new JScrollPane(tablaInfo);
+		scrollPane.setBounds(45,170,700,250);
+		tabla.add(scrollPane);
+		return tabla;
+	}
+	
+	
 }
