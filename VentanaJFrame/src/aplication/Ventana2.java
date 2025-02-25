@@ -3,7 +3,11 @@ package aplication;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -25,123 +29,184 @@ import javax.swing.ImageIcon;
 
 public class Ventana2 extends JFrame{
 
-	Font Titulo = new Font("	SansSerif",Font.BOLD,20);
+	Font Titulo = new Font("	SansSerif",Font.BOLD,30);
 	Font Campos = new Font("Arial",Font.PLAIN,18);
-	Font media = new Font("SansSerif",Font.PLAIN,15);
+	Font media = new Font("SansSerif",Font.ITALIC,15);
+	
+	Color bordeAcc = new Color(23, 133, 44);
+	Color fondoVerdeOs = new Color(31, 104, 59);
+	Color fondoAzulOs = new Color(35, 96, 120);
 
 	public Ventana2(String title) {
 		
 		this.setTitle(title);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(800, 500);
+		this.setSize(1000, 700);
 		this.setMinimumSize(new Dimension(400,400));
 		this.setMaximumSize(new Dimension(900,700));
 	
 		this.setLocationRelativeTo(null);	
 		this.setResizable(true);
 		this.setLayout(null);
-		//this.add(this.login());
+		this.add(this.login());
 		//this.add(this.registro());
-		this.add(this.tabla());
+		//this.add(this.tabla());
 		
 		this.repaint();
 	}
 	
 	public JPanel login() {
-		//Creacion del panel
-		JPanel login = new JPanel();
+		//Creacion del panel principal
+		FondoLogin principal = new FondoLogin();
+		principal.setLayout(null);
+		principal.setLocation(0, 0);
+		principal.setSize(1000, 700);
+		principal.setVisible(true);
+		
+		
+		//Creacion de panel para el login
+		PanelRedondo login = new PanelRedondo();
 		login.setLayout(null);
-		login.setLocation(0, 0);
+		login.setLocation(100, 80);
 		login.setSize(800, 500);
-		login.setOpaque(true);
-		login.setBackground(new Color (227, 227, 227));
+		//login.setOpaque(true);
+		login.setColorF(Color.WHITE);
 		login.setVisible(true);
+		principal.add(login);
+		
+		//Creacion de panel para las credenciales y botones
+		JPanel credencial = new JPanel();
+		credencial.setLayout(null);
+		credencial.setLocation(5, 5);
+		credencial.setSize(350, 480);
+		credencial.setOpaque(true);
+		credencial.setBackground(Color.white);
+		credencial.setVisible(true);
+		login.add(credencial);
 		
 		//Label para el texto iniciar sesion
-		JLabel etiqueta1 = new JLabel("Iniciar sesión");
-		etiqueta1.setBounds(140, 70, 140, 35);
+		JLabel etiqueta1 = new JLabel("User Login");
+		etiqueta1.setBounds(85, 70, 230, 35);
 		etiqueta1.setHorizontalAlignment(JLabel.CENTER);
 		etiqueta1.setFont(Titulo);
-		login.add(etiqueta1);
+		credencial.add(etiqueta1);
 		
 		//Label para el texto usuario o email
-		JLabel etiqueta2 = new JLabel("Usuario o email");
+		JLabel etiqueta2 = new JLabel("Username or email");
 		etiqueta2.setSize(200, 20);
-		etiqueta2.setLocation(90,140);
+		etiqueta2.setLocation(70,140);
 		etiqueta2.setHorizontalAlignment(JLabel.LEFT);
 		etiqueta2.setVerticalAlignment(JLabel.CENTER);
 		etiqueta2.setFont(Campos);
-		login.add(etiqueta2);
+		credencial.add(etiqueta2);
+		
+		//Icono de sobre para el ingreso de email
+		ImageIcon sobre = new ImageIcon(getClass().getResource("sobreR.png"));
+		Image redimensionS = sobre.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+		ImageIcon sobreR = new ImageIcon(redimensionS);
+		JLabel iconoSobre = new JLabel(sobreR);
+		iconoSobre.setLocation(40, 170);
+		iconoSobre.setSize(30, 30);
+		credencial.add(iconoSobre);
+		
 		
 		//Campo de texto
 		JTextField ingreso = new JTextField();
 		ingreso.setSize(270,30);
-		ingreso.setLocation(90, 170);
+		ingreso.setLocation(70, 170);
 		ingreso.setBorder(BorderFactory.createLineBorder(Color.BLACK,2, rootPaneCheckingEnabled));
-		login.add(ingreso);
+		credencial.add(ingreso);
 		
 		//Label indicando contraseña
-		JLabel etiqueta3 = new JLabel("Contraseña");
+		JLabel etiqueta3 = new JLabel("Password");
 		etiqueta3.setSize(150, 20);
-		etiqueta3.setLocation(90,220);
+		etiqueta3.setLocation(70,220);
 		etiqueta3.setHorizontalAlignment(JLabel.LEFT);
 		etiqueta3.setVerticalAlignment(JLabel.CENTER);
 		etiqueta3.setFont(Campos);
-		login.add(etiqueta3);
+		credencial.add(etiqueta3);
+		
+		//Label con icono de candado
+		ImageIcon candado = new ImageIcon(getClass().getResource("candado.png"));
+		Image redimensionC = candado.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+		ImageIcon candadoR = new ImageIcon(redimensionC);
+		JLabel iconoCandado = new JLabel(candadoR);
+		iconoCandado.setLocation(40, 250);
+		iconoCandado.setSize(30, 30);
+		credencial.add(iconoCandado);
 		
 		//Campo para ingresar contraseña
 		JPasswordField contra = new JPasswordField();
 		contra.setSize(270,30);
-		contra.setLocation(90, 250);
+		contra.setLocation(70, 250);
 		contra.setBorder(BorderFactory.createLineBorder(Color.BLACK,2, rootPaneCheckingEnabled));
-		login.add(contra);
+		credencial.add(contra);
 		
-		//Casilla para marcar 
-		JCheckBox marca = new JCheckBox("Recuerdame");
+		//Casilla para marcar recordar el inicio de sesion
+		JCheckBox marca = new JCheckBox("Remember");
 		marca.setSize(120, 25);
-		marca.setLocation(90,290);
+		marca.setLocation(60,290);
 		marca.setHorizontalAlignment(JLabel.LEFT);
 		marca.setOpaque(false);
 		marca.setFont(media);
-		login.add(marca);
+		credencial.add(marca);
 		
-		
-		JLabel olvidado = new JLabel("Olvidé mi contraseña");
-		olvidado.setSize(150, 20);
-		olvidado.setLocation(210, 292);
+		//etiqueta para la opcion de olvidar contraseña
+		JLabel olvidado = new JLabel("Forgot password");
+		olvidado.setSize(155, 20);
+		olvidado.setLocation(180, 292);
 		olvidado.setHorizontalAlignment(JLabel.RIGHT);
 		olvidado.setFont(media);
-		login.add(olvidado);
+		credencial.add(olvidado);
 		
-		JButton iniciar = new JButton("Acceder");
+		//boton de login con efecto hover y bordes redondeados
+		botonPersonalizado iniciar = new botonPersonalizado("Login");
+		iniciar.setRadio(25);
 		iniciar.setSize(170, 45);
-		iniciar.setLocation(135, 330);
-		iniciar.setForeground(Color.WHITE);
+		iniciar.setLocation(120, 330);
+		iniciar.setForeground(Color.white);
 		iniciar.setFont(new Font("Arial",Font.BOLD,18));
-		iniciar.setBackground(new Color(47, 184, 109));
-		iniciar.setBorder(BorderFactory.createLineBorder(new Color(23, 133, 44), 2, rootPaneCheckingEnabled));
-		login.add(iniciar);
+		iniciar.setColorFondo(new Color(46, 174, 91));
+		iniciar.addMouseListener(new MouseAdapter(){
+			public void mouseEntered(MouseEvent e) {
+		        iniciar.setColorFondo(fondoVerdeOs);
+		    }
+			public void mouseExited(MouseEvent e) {
+		        iniciar.setColorFondo(new Color(46, 174, 91));
+		    }
+		});
+		credencial.add(iniciar);
 		
-		JButton crear = new JButton("Registrarse");
+		//Boton de SignUp con efecto hover y bordes redondos
+		botonPersonalizado crear = new botonPersonalizado("SignUp");
+		crear.setRadio(25);
 		crear.setSize(170, 45);
-		crear.setLocation(135, 390);
+		crear.setLocation(120, 390);
 		crear.setForeground(Color.WHITE);
 		crear.setFont(new Font("Arial",Font.BOLD,18));
-		crear.setBackground(new Color(46, 125, 187));
-		crear.setBorder(BorderFactory.createLineBorder(new Color(18, 78, 124), 2, rootPaneCheckingEnabled));
-		login.add(crear);
+		crear.setColorFondo(new Color(47, 115, 176));
+		crear.addMouseListener(new MouseAdapter(){
+			public void mouseEntered(MouseEvent e) {
+		        crear.setColorFondo(fondoAzulOs);
+		    }
+			public void mouseExited(MouseEvent e) {
+		        crear.setColorFondo(new Color(47, 115, 176));
+		    }
+		});
+		credencial.add(crear);
 		
 		//Colocar imagen y redimensionarla para estar al lado derecho del panel
-		ImageIcon imagen= new ImageIcon(getClass().getResource("Imagen login.jpg"));
-		Image redimension= imagen.getImage().getScaledInstance(400, 600, Image.SCALE_SMOOTH);
+		ImageIcon imagen= new ImageIcon(getClass().getResource("vaca.jpg"));
+		Image redimension= imagen.getImage().getScaledInstance(390, 480, Image.SCALE_SMOOTH);
 		ImageIcon nuevaImagen = new ImageIcon(redimension);
-		JLabel icono = new JLabel(nuevaImagen);
-		icono.setBounds(400, 0, 400, 600);
+		LabelRedondo icono = new LabelRedondo(nuevaImagen,30);
+		icono.setLayout(null);
+		icono.setBounds(400, 10, 390, 480);
 		login.add(icono);
 		
 		
-		return login;
+		return principal;
 	}
 	
 	public JPanel registro() {
@@ -380,6 +445,8 @@ public class Ventana2 extends JFrame{
 		tabla.add(scrollPane);
 		return tabla;
 	}
+
+	
 	
 	
 }
