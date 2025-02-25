@@ -15,6 +15,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
@@ -53,7 +56,48 @@ public class Ventana2 extends JFrame{
 		//this.add(this.registro());
 		//this.add(this.tabla());
 		
+		
+		
+		JMenuBar barra = new JMenuBar(); //Crea una barra de menú
+		
+		JMenu menu1 = new JMenu("Archivo");
+		JMenu menu2 = new JMenu("Ayuda");
+		JMenu menu3 = new JMenu("Mas Opciones");
+		
+		barra.add(menu1);
+		barra.add(menu2);
+		
+		this.setJMenuBar(barra);
+		
+		JMenuItem abrir = new JMenuItem("Abrir");
+		abrir.setIcon(new ImageIcon(getClass().getResource("open.png")));
+		menu1.add(abrir);
+		
+		JMenuItem nuevo = new JMenuItem("Nuevo");
+		nuevo.setIcon(new ImageIcon(getClass().getResource("agregar16.png")));
+		menu1.add(nuevo);
+		JMenuItem guardar = new JMenuItem("Guardar");
+		guardar.setIcon(new ImageIcon(getClass().getResource("save.png")));
+		menu1.add(guardar);
+		JMenuItem cerrar = new JMenuItem("Cerrar");
+		cerrar.setIcon(new ImageIcon(getClass().getResource("close.png")));
+		menu1.add(cerrar);
+		
+		JMenuItem imprimir = new JMenuItem("Imprimir");
+		JMenuItem exportar = new JMenuItem("Exportar");
+		JMenuItem importar = new JMenuItem("Importar");
+		menu3.add(imprimir);
+		menu3.add(exportar);
+		menu3.add(importar);
+		menu1.add(menu3);
+		
+		JRadioButton help = new JRadioButton("Manual de Usuario");
+		menu2.add(help);
+		
+		
+		
 		this.repaint();
+		this.revalidate();
 	}
 	
 	public JPanel login() {
@@ -215,7 +259,7 @@ public class Ventana2 extends JFrame{
 		//Creacion del panel
 		JPanel registro = new JPanel();
 		registro.setLayout(null);
-		registro.setLocation(0, 0);
+		registro.setLocation(100,50);
 		registro.setSize(800, 500);
 		registro.setOpaque(true);
 		registro.setBackground(new Color (227, 227, 227));
@@ -445,6 +489,7 @@ public class Ventana2 extends JFrame{
 		tabla.add(scrollPane);
 		return tabla;
 	}
+
 
 	
 	
