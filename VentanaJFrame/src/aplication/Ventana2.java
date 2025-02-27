@@ -1,9 +1,11 @@
 package aplication;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -26,6 +28,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
@@ -36,6 +39,7 @@ public class Ventana2 extends JFrame{
 	Font Campos = new Font("Arial",Font.PLAIN,18);
 	Font media = new Font("SansSerif",Font.ITALIC,15);
 	
+	
 	Color bordeAcc = new Color(23, 133, 44);
 	Color fondoVerdeOs = new Color(31, 104, 59);
 	Color fondoAzulOs = new Color(35, 96, 120);
@@ -45,19 +49,20 @@ public class Ventana2 extends JFrame{
 		this.setTitle(title);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(1000, 700);
+		this.setSize(500, 600);
 		this.setMinimumSize(new Dimension(400,400));
 		this.setMaximumSize(new Dimension(900,700));
 	
 		this.setLocationRelativeTo(null);	
 		this.setResizable(true);
-		this.setLayout(null);
-		this.add(this.login());
+		//this.setLayout(null);
+		//this.add(this.login());
 		//this.add(this.registro());
 		//this.add(this.tabla());
+		this.add(this.interes());
 		
 		
-		
+		/*
 		JMenuBar barra = new JMenuBar(); //Crea una barra de menú
 		
 		JMenu menu1 = new JMenu("Archivo");
@@ -93,7 +98,7 @@ public class Ventana2 extends JFrame{
 		
 		JRadioButton help = new JRadioButton("Manual de Usuario");
 		menu2.add(help);
-		
+		*/
 		
 		
 		this.repaint();
@@ -391,6 +396,7 @@ public class Ventana2 extends JFrame{
 	}
 
 	public JPanel tabla() {
+
 		
 		//Creacion del panel
 		JPanel tabla = new JPanel();
@@ -490,7 +496,83 @@ public class Ventana2 extends JFrame{
 		return tabla;
 	}
 
-
+	public JPanel interes() {
+		JPanel interes = new JPanel(new BorderLayout(0,20));
+		interes.setSize(400, 600);
+		interes.setOpaque(true);
+		interes.setVisible(true);
+		interes.setBackground(Color.white);
+		
+		JLabel etiqueta1 = new JLabel("Interés");
+		etiqueta1.setHorizontalAlignment(JLabel.LEFT);
+		etiqueta1.setFont(Titulo);
+		etiqueta1.setForeground(Color.red);
+		interes.add(etiqueta1,BorderLayout.NORTH);
+		
+		JPanel calculoIn = new JPanel(new GridLayout(4,2,5,50));
+		calculoIn.setBackground(new Color(126, 200, 134));
+		calculoIn.setSize(380, 300);
+		calculoIn.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(118, 133, 119),2), "Calcular interés"));
+		interes.add(calculoIn,BorderLayout.CENTER);
+		
+		JLabel capital = new JLabel("Capital");
+		capital.setHorizontalAlignment(JLabel.CENTER);
+		capital.setFont(media);
+		calculoIn.add(capital);
+		JTextField campo = new JTextField("1500");
+		calculoIn.add(campo);
+		
+		JLabel tiempo = new JLabel("Tiempo");
+		tiempo.setHorizontalAlignment(JLabel.CENTER);
+		tiempo.setFont(media);
+		calculoIn.add(tiempo);
+		JTextField campo1 = new JTextField("2");
+		calculoIn.add(campo1);
+		
+		JLabel tasa = new JLabel("Tasa de Interes");
+		tasa.setHorizontalAlignment(JLabel.CENTER);
+		tasa.setFont(media);
+		calculoIn.add(tasa);
+		JTextField campo2 = new JTextField("0.1");
+		calculoIn.add(campo2);
+		
+		JButton calcular = new JButton("Calcular");
+		calcular.setFont(media);
+		calculoIn.add(calcular);
+		
+		JButton cancelar = new JButton("Cancelar");
+		cancelar.setFont(media);
+		calculoIn.add(cancelar);
+		
+		JPanel resultado = new JPanel(new GridLayout(2,2,10,20));
+		resultado.setBorder(BorderFactory.createMatteBorder(20, 10, 20, 10, Color.white));
+		resultado.setBackground(new Color(194, 73, 98));
+		interes.add(resultado,BorderLayout.SOUTH);
+		
+		
+		
+		JLabel interesR = new JLabel("Interes:");
+		interesR.setHorizontalAlignment(JLabel.CENTER);
+		interesR.setFont(media);
+		interesR.setForeground(Color.white);
+		interesR.setBorder(BorderFactory.createMatteBorder(30, 5, 0, 10, new Color(194, 73, 98)));
+		resultado.add(interesR);
+		JTextField campo3 = new JTextField("315.000000000001");
+		campo3.setBorder(BorderFactory.createMatteBorder(30, 5, 0, 10, new Color(194, 73, 98)));
+		resultado.add(campo3);
+		
+		JLabel monto = new JLabel("Monto:");
+		monto.setHorizontalAlignment(JLabel.CENTER);
+		monto.setFont(media);
+		monto.setForeground(Color.white);
+		monto.setBorder(BorderFactory.createMatteBorder(5, 5, 20, 10, new Color(194, 73, 98)));
+		resultado.add(monto);
+		JTextField campo4 = new JTextField("1815.000000000002");
+		campo4.setBorder(BorderFactory.createMatteBorder(5, 5, 20, 10, new Color(194, 73, 98)));
+		resultado.add(campo4);
+		
+		return interes;
+	}
 	
 	
 	
