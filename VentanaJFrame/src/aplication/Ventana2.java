@@ -52,6 +52,10 @@ public class Ventana2 extends JFrame{
 		this.setSize(500, 600);
 		this.setMinimumSize(new Dimension(400,400));
 		this.setMaximumSize(new Dimension(900,700));
+		
+		//Para usar imagen en el icono de JFrame debe ser de tipo Image
+		Image icono = new ImageIcon(getClass().getResource("iconoL.png")).getImage();
+		this.setIconImage(icono);
 	
 		this.setLocationRelativeTo(null);	
 		this.setResizable(true);
