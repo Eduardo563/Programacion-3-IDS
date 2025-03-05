@@ -1,15 +1,18 @@
 package aplication;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -52,6 +55,7 @@ public class Ventana2 extends JFrame{
 		this.setSize(500, 600);
 		this.setMinimumSize(new Dimension(400,400));
 		this.setMaximumSize(new Dimension(900,700));
+		this.setBackground(fondoAzulOs);
 		
 		//Para usar imagen en el icono de JFrame debe ser de tipo Image
 		Image icono = new ImageIcon(getClass().getResource("iconoL.png")).getImage();
@@ -63,7 +67,7 @@ public class Ventana2 extends JFrame{
 		//this.add(this.login());
 		//this.add(this.registro());
 		//this.add(this.tabla());
-		this.add(this.interes());
+		//this.add(this.interes());
 		
 		
 		/*
@@ -578,6 +582,50 @@ public class Ventana2 extends JFrame{
 		return interes;
 	}
 	
+	public void paint(Graphics g) {
+		super.paint(g);
+		
+		Graphics2D g2 = (Graphics2D) g;
+		
+		g2.setColor(Color.RED);
+		g2.clearRect(100, 100, 50, 50);
+		
+		g2.drawRect(50, 50, 300, 300);
+		
+		g2.fillRect(150, 150, 200, 200);
+		
+		
+		g2.setColor(fondoVerdeOs);
+		g2.fillRoundRect(300, 80, 170, 170, 30, 30);
+		
+		g2.setColor(bordeAcc);
+		g2.setStroke(new BasicStroke(5));
+		g2.drawLine(150, 100, 500, 500);
+		
+		g2.setColor(new Color(72, 24, 191));
+		g2.drawOval(200, 400, 100, 100);
+		
+		g2.setColor(new Color(191, 24, 151));
+		g2.fillOval(200, 450, 90, 90);
+		
+		g2.setColor(new Color(21, 148, 200));
+		g2.drawArc(100, 300, 100, 100, 0, -180);
+		g2.fillArc(100, 300, 100, 100, 0, 180);
+		
+		g2.setColor(new Color(218, 166, 28));
+		g2.setFont(Campos);
+		g2.drawString("Plumon Sharpie", 100, 100);
+		
+		g2.setColor(new Color (206, 204, 39));
+		int [] xs = {100,100,400};
+		int [] ys = {100,200,400};
+		g2.drawPolygon(xs, ys, 3);
+		
+		int [] xs2 = {300,250,170};
+		int [] ys2 = {300,200,150};
+		g2.fillPolygon(xs2, ys2, 3);
+		
+	}
 	
 	
 }
