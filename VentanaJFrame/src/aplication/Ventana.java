@@ -10,7 +10,8 @@ public class Ventana {
 		//JFrame registro= new Ventana2("Calculando el interes");
 		//JFrame calculadora = new CalculadoraUI("Calculadora");
 		//JFrame casa = new DibujoCasa();
-		JFrame superMario = new SuperMarioBros3();
+		//JFrame superMario = new SuperMarioBros3();
+		JFrame SuperMarioWorld = new SuperMarioWorld();
 	}
 
 }
