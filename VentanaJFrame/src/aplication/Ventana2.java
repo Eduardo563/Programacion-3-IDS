@@ -9,6 +9,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -65,7 +67,7 @@ public class Ventana2 extends JFrame{
 		this.setResizable(true);
 		//this.setLayout(null);
 		//this.add(this.login());
-		//this.add(this.registro());
+		this.add(this.registro());
 		//this.add(this.tabla());
 		//this.add(this.interes());
 		
@@ -175,6 +177,7 @@ public class Ventana2 extends JFrame{
 		ingreso.setBorder(BorderFactory.createLineBorder(Color.BLACK,2, rootPaneCheckingEnabled));
 		credencial.add(ingreso);
 		
+		
 		//Label indicando contraseña
 		JLabel etiqueta3 = new JLabel("Password");
 		etiqueta3.setSize(150, 20);
@@ -232,6 +235,25 @@ public class Ventana2 extends JFrame{
 			public void mouseExited(MouseEvent e) {
 		        iniciar.setColorFondo(new Color(46, 174, 91));
 		    }
+		});
+		iniciar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Funciona");
+				if (ingreso.getText().equals("")) {
+					ingreso.setBorder(BorderFactory.createLineBorder(Color.RED, 5));
+				}
+				else {
+					ingreso.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
+				}
+				if (contra.getPassword().length<6 || contra.getPassword().equals("")) {
+					contra.setBorder(BorderFactory.createLineBorder(Color.RED, 5));
+				}
+				else
+					contra.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
+			}
+			
 		});
 		credencial.add(iniciar);
 		
@@ -397,6 +419,33 @@ public class Ventana2 extends JFrame{
 		crear.setBackground(new Color(46, 125, 187));
 		crear.setBorder(BorderFactory.createLineBorder(new Color(18, 78, 124), 2, rootPaneCheckingEnabled));
 		registro.add(crear);
+		
+		crear.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (ingreso.getText().equals("")||ingreso.getText().trim().isEmpty() ) {
+					ingreso.setBorder(BorderFactory.createLineBorder(Color.red, 5));
+				}
+				else {
+					ingreso.setBorder(BorderFactory.createLineBorder(Color.green, 5));
+				}
+				if (bio.getText().length()>0 & bio.getText().length()<5) {
+					bio.setBorder(BorderFactory.createLineBorder(Color.red, 5));
+				}
+				else {
+					bio.setBorder(BorderFactory.createLineBorder(Color.green, 5));
+				}
+				if (!terminosA.isSelected()) {
+					terminosA.setBorder(BorderFactory.createLineBorder(Color.red, 5));
+				}
+				else {
+					terminosA.setBorder(BorderFactory.createLineBorder(Color.green, 5));
+				}
+				
+			}
+			
+		});
 		
 		
 		return registro;
@@ -582,6 +631,7 @@ public class Ventana2 extends JFrame{
 		return interes;
 	}
 	
+	/*
 	public void paint(Graphics g) {
 		super.paint(g);
 		
@@ -625,7 +675,7 @@ public class Ventana2 extends JFrame{
 		int [] ys2 = {300,200,150};
 		g2.fillPolygon(xs2, ys2, 3);
 		
-	}
+	}*/
 	
 	
 }
