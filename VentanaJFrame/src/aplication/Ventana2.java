@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
@@ -66,7 +67,7 @@ public class Ventana2 extends JFrame{
 		this.setLocationRelativeTo(null);	
 		this.setResizable(true);
 		//this.setLayout(null);
-		//this.add(this.login());
+		this.add(this.login());
 		this.add(this.registro());
 		//this.add(this.tabla());
 		//this.add(this.interes());
@@ -236,23 +237,42 @@ public class Ventana2 extends JFrame{
 		        iniciar.setColorFondo(new Color(46, 174, 91));
 		    }
 		});
+		//Agregar acciones y restricciones de acceso de acuerdo a usuario y contraseña almacenados
 		iniciar.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				boolean control1=false,control2=false;
+				String usuario="Lalin58";
+				String contraseña="PokemonSilver@2";
+				String textContra = new String(contra.getPassword());
 				System.out.println("Funciona");
-				if (ingreso.getText().equals("")) {
+				
+				if (ingreso.getText().trim().isEmpty() || ingreso.getText().matches(".*\\s.*")){
 					ingreso.setBorder(BorderFactory.createLineBorder(Color.RED, 5));
 				}
 				else {
 					ingreso.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
+					control1=true;
 				}
-				if (contra.getPassword().length<6 || contra.getPassword().equals("")) {
+				if (contra.getPassword().length<6 || textContra.matches(".*\\s.*")) {
 					contra.setBorder(BorderFactory.createLineBorder(Color.RED, 5));
 				}
-				else
+				else {
 					contra.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
+					control2=true;
+				}
+				if (control1 & control2) {
+					if(ingreso.getText().equals(usuario) && textContra.equals(contraseña)) {
+						JOptionPane.showMessageDialog(null, "Ingreso exitoso", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Datos Incorrectos", "Acceso Denegado", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				
+					
 			}
+			
 			
 		});
 		credencial.add(iniciar);
@@ -420,34 +440,52 @@ public class Ventana2 extends JFrame{
 		crear.setBorder(BorderFactory.createLineBorder(new Color(18, 78, 124), 2, rootPaneCheckingEnabled));
 		registro.add(crear);
 		
+		//Creacion de un action listener y restricciones para el ingreso de acuerdo a contraseña y usuario almacenado
 		crear.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (ingreso.getText().equals("")||ingreso.getText().trim().isEmpty() ) {
+				boolean control1=false,control2=false,control3=false,control4=false;
+				boolean control5=false;
+				
+				if (ingreso.getText().equals("")||ingreso.getText().matches(".*\\s.*") ) {
 					ingreso.setBorder(BorderFactory.createLineBorder(Color.red, 5));
 				}
 				else {
 					ingreso.setBorder(BorderFactory.createLineBorder(Color.green, 5));
+					control1=true;
 				}
-				if (bio.getText().length()>0 & bio.getText().length()<5) {
+				if(bio.getText().length()>0 & bio.getText().length()<5) {
 					bio.setBorder(BorderFactory.createLineBorder(Color.red, 5));
 				}
 				else {
 					bio.setBorder(BorderFactory.createLineBorder(Color.green, 5));
+					control2=true;
 				}
 				if (!terminosA.isSelected()) {
 					terminosA.setBorder(BorderFactory.createLineBorder(Color.red, 5));
 				}
 				else {
 					terminosA.setBorder(BorderFactory.createLineBorder(Color.green, 5));
+					control3=true;
+				}
+				if(!P1.isSelected() && !P2.isSelected() && !P3.isSelected()) {
+					//Solo para indicar que por lo menos uno se debe elegir se pone en rojo el primero
+					P1.setBorder(BorderFactory.createLineBorder(Color.red, 5));
+					JOptionPane.showMessageDialog(null, "Escoga por lo menos una preferencia", "Preferencias invalidas", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					control4=true;
+				}
+				if (control1 && control2 && control3 && control4 ) {
+					control5=true;
+					if (control5) {
+						JOptionPane.showMessageDialog(null, "Cuenta creada exitosamente", "Registro completado", JOptionPane.INFORMATION_MESSAGE);
+					}
 				}
 				
 			}
-			
 		});
-		
-		
 		return registro;
 		
 	}
