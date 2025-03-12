@@ -79,9 +79,11 @@ public class Ventana2 extends JFrame{
 		JMenu menu1 = new JMenu("Archivo");
 		JMenu menu2 = new JMenu("Ayuda");
 		JMenu menu3 = new JMenu("Mas Opciones");
+		JMenu menu4 = new JMenu("Cuenta");
 		
 		barra.add(menu1);
 		barra.add(menu2);
+		barra.add(menu4);
 		
 		this.setJMenuBar(barra);
 		
@@ -99,6 +101,30 @@ public class Ventana2 extends JFrame{
 		cerrar.setIcon(new ImageIcon(getClass().getResource("close.png")));
 		menu1.add(cerrar);
 		
+		//Se agrega la opcion en la barra de menu para alternar entre login y SignUp
+		//Permite ir al incio de sesion 
+		JMenuItem login = new JMenuItem("Login");
+		menu4.add(login);
+		login.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					manager("login");
+			}
+			
+		});
+		//Este permite ir a la creacion de cuenta
+		JMenuItem crearCuenta = new JMenuItem("Crear Cuenta");
+		menu4.add(crearCuenta);
+		crearCuenta.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					manager("registro");
+			}
+			
+		});
+		
 		JMenuItem imprimir = new JMenuItem("Imprimir");
 		JMenuItem exportar = new JMenuItem("Exportar");
 		JMenuItem importar = new JMenuItem("Importar");
@@ -109,8 +135,6 @@ public class Ventana2 extends JFrame{
 		
 		JRadioButton help = new JRadioButton("Manual de Usuario");
 		menu2.add(help);
-		
-		
 		
 		this.repaint();
 		this.revalidate();
