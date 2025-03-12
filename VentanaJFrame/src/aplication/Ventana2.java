@@ -68,12 +68,12 @@ public class Ventana2 extends JFrame{
 		this.setResizable(true);
 		//this.setLayout(null);
 		this.add(this.login());
-		this.add(this.registro());
+		//this.add(this.registro());
 		//this.add(this.tabla());
 		//this.add(this.interes());
 		
 		
-		/*
+		
 		JMenuBar barra = new JMenuBar(); //Crea una barra de menú
 		
 		JMenu menu1 = new JMenu("Archivo");
@@ -109,7 +109,7 @@ public class Ventana2 extends JFrame{
 		
 		JRadioButton help = new JRadioButton("Manual de Usuario");
 		menu2.add(help);
-		*/
+		
 		
 		
 		this.repaint();
@@ -293,6 +293,14 @@ public class Ventana2 extends JFrame{
 		        crear.setColorFondo(new Color(47, 115, 176));
 		    }
 		});
+		crear.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					manager("registro");
+			}
+			
+		});
 		credencial.add(crear);
 		
 		//Colocar imagen y redimensionarla para estar al lado derecho del panel
@@ -472,7 +480,7 @@ public class Ventana2 extends JFrame{
 				if(!P1.isSelected() && !P2.isSelected() && !P3.isSelected()) {
 					//Solo para indicar que por lo menos uno se debe elegir se pone en rojo el primero
 					P1.setBorder(BorderFactory.createLineBorder(Color.red, 5));
-					JOptionPane.showMessageDialog(null, "Escoga por lo menos una preferencia", "Preferencias invalidas", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Escoga por lo menos una preferencia", "Preferencias invalidas", JOptionPane.WARNING_MESSAGE);
 				}
 				else {
 					control4=true;
@@ -486,6 +494,23 @@ public class Ventana2 extends JFrame{
 				
 			}
 		});
+		
+		
+		JButton iniciar = new JButton("Login");
+		iniciar.setSize(170, 30);
+		iniciar.setLocation(330, 500);
+		iniciar.setForeground(Color.WHITE);
+		iniciar.setFont(new Font("Arial",Font.BOLD,16));
+		iniciar.setBackground(new Color(46, 125, 187));
+		iniciar.setBorder(BorderFactory.createLineBorder(new Color(18, 78, 124), 2, rootPaneCheckingEnabled));
+		iniciar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					manager("login");
+			}
+		});
+		registro.add(iniciar);
 		return registro;
 		
 	}
@@ -668,6 +693,19 @@ public class Ventana2 extends JFrame{
 		
 		return interes;
 	}
+	
+	public void manager(String target) {
+		this.getContentPane().removeAll();
+		
+		if (target.equals("registro")) {
+			this.add(this.registro());
+		}
+		if (target.equals("login")) {
+			this.add(this.login());
+		}
+		this.repaint();
+	}
+	
 	
 	/*
 	public void paint(Graphics g) {
