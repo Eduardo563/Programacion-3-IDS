@@ -55,7 +55,7 @@ public class Ventana2 extends JFrame{
 		this.setTitle(title);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(500, 600);
+		this.setSize(1000, 800);
 		this.setMinimumSize(new Dimension(400,400));
 		this.setMaximumSize(new Dimension(900,700));
 		this.setBackground(fondoAzulOs);
@@ -76,66 +76,125 @@ public class Ventana2 extends JFrame{
 		
 		JMenuBar barra = new JMenuBar(); //Crea una barra de menú
 		
-		JMenu menu1 = new JMenu("Archivo");
-		JMenu menu2 = new JMenu("Ayuda");
-		JMenu menu3 = new JMenu("Mas Opciones");
-		JMenu menu4 = new JMenu("Cuenta");
+		JMenu menu1 = new JMenu("Cuenta");
+		JMenu menu2 = new JMenu("Usuarios");
+		JMenu menu3 = new JMenu("Ayuda");
+		
 		
 		barra.add(menu1);
 		barra.add(menu2);
-		barra.add(menu4);
+		barra.add(menu3);
 		
 		this.setJMenuBar(barra);
-		
-		JMenuItem abrir = new JMenuItem("Abrir");
-		abrir.setIcon(new ImageIcon(getClass().getResource("open.png")));
-		menu1.add(abrir);
-		
-		JMenuItem nuevo = new JMenuItem("Nuevo");
-		nuevo.setIcon(new ImageIcon(getClass().getResource("agregar16.png")));
-		menu1.add(nuevo);
-		JMenuItem guardar = new JMenuItem("Guardar");
-		guardar.setIcon(new ImageIcon(getClass().getResource("save.png")));
-		menu1.add(guardar);
-		JMenuItem cerrar = new JMenuItem("Cerrar");
-		cerrar.setIcon(new ImageIcon(getClass().getResource("close.png")));
-		menu1.add(cerrar);
-		
+		//Contenido que va en el menu 1 de Cuenta
 		//Se agrega la opcion en la barra de menu para alternar entre login y SignUp
 		//Permite ir al incio de sesion 
 		JMenuItem login = new JMenuItem("Login");
-		menu4.add(login);
+		menu1.add(login);
 		login.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					manager("login");
+					router("login");
 			}
 			
 		});
 		//Este permite ir a la creacion de cuenta
 		JMenuItem crearCuenta = new JMenuItem("Crear Cuenta");
-		menu4.add(crearCuenta);
+		menu1.add(crearCuenta);
 		crearCuenta.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					manager("registro");
+					router("registro");
 			}
 			
 		});
 		
-		JMenuItem imprimir = new JMenuItem("Imprimir");
-		JMenuItem exportar = new JMenuItem("Exportar");
-		JMenuItem importar = new JMenuItem("Importar");
-		menu3.add(imprimir);
-		menu3.add(exportar);
-		menu3.add(importar);
-		menu1.add(menu3);
+		JMenuItem recuperar = new JMenuItem("Recuperar Cuenta");
+		menu1.add(recuperar);
+		recuperar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				router("Recuperacion de cuenta");
+				
+			}
+			
+		});
+		//Contenido que va en el menu 2 de Usuarios
+		JMenuItem alta = new JMenuItem("Dar de alta una cuenta");
+		menu2.add(alta);
+		alta.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				router("Alta");
+				
+			}
+			
+		});
+		JMenuItem baja = new JMenuItem("Dar de baja una cuenta");
+		menu2.add(baja);
+		baja.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				router("Baja");
+				
+			}
+			
+		});
 		
-		JRadioButton help = new JRadioButton("Manual de Usuario");
-		menu2.add(help);
+		JMenuItem consulta = new JMenuItem("Consultar");
+		menu2.add(consulta);
+		consulta.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				router("Consultar");
+				
+			}
+			
+		});
 		
+		//Contenido que va en el menu 3 de Ayuda
+		JMenuItem comoUsuario = new JMenuItem("¿Como crear un usuario?");
+		menu3.add(comoUsuario);
+		comoUsuario.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				router("Como crear un usuario");
+				
+			}
+			
+		});
+		
+		JMenuItem comoAcc = new JMenuItem("¿Como acceder al sistema?");
+		menu3.add(comoAcc);
+		comoAcc.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				router("Como acceder al sistema");
+				
+			}
+			
+		});
+		
+		JMenuItem olvideContra = new JMenuItem("¿Que pasa si olvide mi contraseña?");
+		menu3.add(olvideContra);
+		olvideContra.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				router("¿Qué pasa si olvidé mi contraseña?");
+				
+			}
+			
+		});
+
 		this.repaint();
 		this.revalidate();
 	}
@@ -321,7 +380,7 @@ public class Ventana2 extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					manager("registro");
+					router("registro");
 			}
 			
 		});
@@ -522,7 +581,7 @@ public class Ventana2 extends JFrame{
 		
 		JButton iniciar = new JButton("Login");
 		iniciar.setSize(170, 30);
-		iniciar.setLocation(330, 500);
+		iniciar.setLocation(330, 450);
 		iniciar.setForeground(Color.WHITE);
 		iniciar.setFont(new Font("Arial",Font.BOLD,16));
 		iniciar.setBackground(new Color(46, 125, 187));
@@ -531,7 +590,7 @@ public class Ventana2 extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					manager("login");
+					router("login");
 			}
 		});
 		registro.add(iniciar);
@@ -718,7 +777,7 @@ public class Ventana2 extends JFrame{
 		return interes;
 	}
 	
-	public void manager(String target) {
+	public void router(String target) {
 		this.getContentPane().removeAll();
 		
 		if (target.equals("registro")) {
@@ -727,8 +786,126 @@ public class Ventana2 extends JFrame{
 		if (target.equals("login")) {
 			this.add(this.login());
 		}
+		if (target.equals("Recuperacion de cuenta")) {
+			this.add(this.recuperar());
+		}
+		if (target.equals("Alta")) {
+			this.add(this.alta());
+		}
+		if (target.equals("Baja")) {
+			this.add(this.baja());
+		}
+		if (target.equals("Consultar")) {
+			this.add(this.tabla());
+		}
+		if (target.equals("Como crear un usuario")) {
+			this.add(this.comoCrear());
+		}
+		if (target.equals("Como acceder al sistema")) {
+			this.add(this.comoAcc());
+		}
+		if (target.equals("¿Qué pasa si olvidé mi contraseña?")) {
+			this.add(this.contraOlvd());
+		}
 		this.repaint();
+		this.revalidate();
 	}
+	
+	public JPanel recuperar() {{
+		JPanel recuperar = new JPanel();
+		recuperar.setSize(1000,800);
+		setLayout(null);
+		JLabel recup = new JLabel("Recuperar Cuenta");
+		recup.setFont(new Font("Century Gothic", Font.BOLD, 18));
+		recup.setBackground(fondoVerdeOs);
+		recup.setBounds(203, 44, 172, 34);
+		add(recup);
+		
+		return recuperar;
+		}
+	}
+
+	public JPanel alta() {{
+		JPanel alta = new JPanel();
+		alta.setSize(1000,800);
+		setLayout(null);
+		JLabel alt = new JLabel("Dar cuenta de alta");
+		alt.setFont(new Font("Century Gothic", Font.BOLD, 18));
+		alt.setBackground(fondoVerdeOs);
+		alt.setBounds(203, 44, 172, 34);
+		add(alt);
+		
+		return alta;
+		}
+	}
+	
+	public JPanel baja() {{
+
+		JPanel baja = new JPanel();
+		baja.setSize(1000,800);
+		setLayout(null);
+		JLabel bJ = new JLabel("Dar cuenta de bJ");
+		bJ.setFont(new Font("Century Gothic", Font.BOLD, 18));
+		bJ.setBackground(fondoVerdeOs);
+		bJ.setBounds(203, 44, 172, 34);
+		add(bJ);
+		
+		return baja;
+		}
+	}
+	
+	public JPanel comoCrear() {{
+
+		JPanel comoCrear = new JPanel();
+		comoCrear.setSize(1000,800);
+		setLayout(null);
+		JLabel comoCr = new JLabel("¿Como crear un usuario?");
+		comoCr.setFont(new Font("Century Gothic", Font.BOLD, 18));
+		comoCr.setBackground(fondoVerdeOs);
+		comoCr.setBounds(203, 44, 172, 34);
+		add(comoCr);
+		
+		return comoCrear;
+		}
+	}
+	
+	public JPanel comoAcc() {{
+
+		JPanel comoAcc = new JPanel();
+		comoAcc.setSize(1000,800);
+		setLayout(null);
+		JLabel comoAc = new JLabel("Como acceder al sistema");
+		comoAc.setFont(new Font("Century Gothic", Font.BOLD, 18));
+		comoAc.setBackground(fondoVerdeOs);
+		comoAc.setBounds(203, 44, 172, 34);
+		add(comoAc);
+		
+		return comoAcc;
+		}
+	}
+	
+	public JPanel contraOlvd() {{
+
+		JPanel contraOlvd = new JPanel();
+		contraOlvd.setSize(1000,800);
+		setLayout(null);
+		JLabel contraO = new JLabel("Dar cuenta de contraO");
+		contraO.setFont(new Font("Century Gothic", Font.BOLD, 18));
+		contraO.setBackground(fondoVerdeOs);
+		contraO.setBounds(203, 44, 172, 34);
+		add(contraO);
+		
+		return contraOlvd;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	/*
