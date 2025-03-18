@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.random.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class BotonMulti extends JFrame {
@@ -38,12 +39,23 @@ public class BotonMulti extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Random aleatorio = new Random();
-				JButton boton2 = new JButton("Presioname");
+				JButton boton2 = new JButton("Hola"+aleatorio.nextDouble());
 				boton2.setSize(aleatorio.nextInt(100), aleatorio.nextInt(200));
 				boton2.setLocation(aleatorio.nextInt(500),aleatorio.nextInt(600));
 				boton2.setBackground(new Color(aleatorio.nextInt(255),aleatorio.nextInt(255),aleatorio.nextInt(255)));
 				botonMulti.add(boton2);
 				botonMulti.repaint();
+				
+				boton2.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						JOptionPane.showMessageDialog(null,boton2.getText());
+						
+					}
+					
+				});
+				
 			}
 			
 		});
