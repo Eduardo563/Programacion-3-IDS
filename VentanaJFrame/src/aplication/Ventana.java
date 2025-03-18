@@ -12,7 +12,8 @@ public class Ventana {
 		//JFrame casa = new DibujoCasa();
 		//JFrame superMario = new SuperMarioBros3();
 		//JFrame SuperMarioWorld = new SuperMarioWorld();
-		JFrame factura = new ExamenFactura("Factura");
+		//JFrame factura = new ExamenFactura("Factura");
+		JFrame botones = new BotonMulti("Botones");
 	}
 
 }
