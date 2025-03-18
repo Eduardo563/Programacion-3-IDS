@@ -33,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.JCheckBox;
@@ -123,7 +124,7 @@ public class Ventana2 extends JFrame{
 			
 		});
 		//Contenido que va en el menu 2 de Usuarios
-		JMenuItem alta = new JMenuItem("Dar de alta una cuenta");
+		JMenuItem alta = new JMenuItem("Dar de alta");
 		menu2.add(alta);
 		alta.addActionListener(new ActionListener() {
 
@@ -134,7 +135,7 @@ public class Ventana2 extends JFrame{
 			}
 			
 		});
-		JMenuItem baja = new JMenuItem("Dar de baja una cuenta");
+		JMenuItem baja = new JMenuItem("Dar de baja");
 		menu2.add(baja);
 		baja.addActionListener(new ActionListener() {
 
@@ -197,6 +198,19 @@ public class Ventana2 extends JFrame{
 
 		this.repaint();
 		this.revalidate();
+	}
+	
+	public JButton volver() {
+		JButton volver = new JButton("Volver");
+		volver.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				router("login");
+			}
+			
+		});
+		return volver;
 	}
 	
 	public JPanel login() {
@@ -581,7 +595,7 @@ public class Ventana2 extends JFrame{
 		
 		JButton iniciar = new JButton("Login");
 		iniciar.setSize(170, 30);
-		iniciar.setLocation(330, 450);
+		iniciar.setLocation(330, 460);
 		iniciar.setForeground(Color.WHITE);
 		iniciar.setFont(new Font("Arial",Font.BOLD,16));
 		iniciar.setBackground(new Color(46, 125, 187));
@@ -594,6 +608,14 @@ public class Ventana2 extends JFrame{
 			}
 		});
 		registro.add(iniciar);
+		
+		JButton regresar =  volver();
+		regresar.setBounds(100,600,100,30);
+		regresar.setBackground(new Color(74, 174, 213));
+		regresar.setFont(Campos);
+		regresar.setForeground(Color.white);
+		this.add(regresar);
+		
 		return registro;
 		
 	}
@@ -604,52 +626,72 @@ public class Ventana2 extends JFrame{
 		//Creacion del panel
 		JPanel tabla = new JPanel();
 		tabla.setLayout(null);
-		tabla.setLocation(0, 0);
-		tabla.setSize(800, 500);
+		tabla.setLocation(100, 50);
+		tabla.setSize(800, 600);
 		tabla.setOpaque(true);
-		tabla.setBackground(new Color (164, 164, 163));
+		tabla.setBackground(new Color (227, 227, 227));
 		tabla.setVisible(true);
 		
 		//Label para el texto tabla
-		JLabel etiqueta1 = new JLabel("Usuarios");
-		etiqueta1.setBounds(330, 30, 140, 35);
+		JLabel etiqueta1 = new JLabel("Consulta de Usuarios");
+		etiqueta1.setBounds(250, 0, 380, 35);
 		etiqueta1.setHorizontalAlignment(JLabel.CENTER);
 		etiqueta1.setFont(Titulo);
-		etiqueta1.setBackground(Color.ORANGE);
 		etiqueta1.setOpaque(true);
 		tabla.add(etiqueta1);
 		
 		JLabel nUsuarios = new JLabel("Total de usuarios");
-		nUsuarios.setBounds(100, 80, 200, 40);
+		nUsuarios.setBounds(50, 80, 200, 40);
 		nUsuarios.setHorizontalAlignment(JLabel.CENTER);
-		nUsuarios.setFont(Titulo);
+		nUsuarios.setFont(Campos);
 		tabla.add(nUsuarios);
 		
 		JLabel num = new JLabel("96");
-		num.setBounds(100, 100, 200, 60);
+		num.setBounds(40, 100, 200, 60);
 		num.setHorizontalAlignment(JLabel.CENTER);
-		num.setFont(Titulo);
+		num.setFont(Campos);
 		num.setBackground(Color.ORANGE);
 		tabla.add(num);
 		
 		//Label para un recuadro con fondo
 		JLabel fondo = new JLabel();
-		fondo.setBounds(100, 70, 200, 80);
+		fondo.setBounds(45, 65, 200, 80);
 		fondo.setHorizontalAlignment(JLabel.CENTER);
 		fondo.setFont(Titulo);
-		fondo.setBackground(new Color(187, 174, 157));
+		fondo.setBackground(new Color(244, 187, 114));
 		fondo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 		fondo.setOpaque(true);
 		tabla.add(fondo);
 		
+		JLabel usuario = new JLabel("Ingrese su usuario");
+		usuario.setBounds(300,80,180,20);
+		usuario.setFont(Campos);
+		tabla.add(usuario);
+		
+		JTextField ingreU = new JTextField();
+		ingreU.setBounds(300, 120, 250, 30);
+		tabla.add(ingreU);
+		
+		JLabel correo = new JLabel("Ingrese su correo");
+		correo.setBounds(300,180,180,20);
+		correo.setFont(Campos);
+		tabla.add(correo);
+		
+		JTextField correoIn = new JTextField();
+		correoIn.setBounds(300, 220, 250, 30);
+		tabla.add(correoIn);
+		
 		JButton export = new JButton("Exportar");
-		export.setBounds(500, 100, 100, 40);
+		export.setBounds(500, 260, 100, 40);
 		tabla.add(export);
 		
 		JButton añadir = new JButton("Añadir");
-		añadir.setBounds(610, 100, 100, 40);
+		añadir.setBounds(610, 260, 100, 40);
 		tabla.add(añadir);
 		
+		JButton buscar = new JButton("Buscar");
+		buscar.setBounds(380, 260, 100, 40);
+		tabla.add(buscar);
 		
 		//Arreglo de los titulos de la tabla
 		String [] columName = {
@@ -694,8 +736,16 @@ public class Ventana2 extends JFrame{
 		};
 		JTable tablaInfo = new JTable(data,columName);
 		JScrollPane scrollPane = new JScrollPane(tablaInfo);
-		scrollPane.setBounds(45,170,700,250);
+		scrollPane.setBounds(45,320,700,250);
 		tabla.add(scrollPane);
+		
+		JButton regresar =  volver();
+		regresar.setBounds(100,650,100,30);
+		regresar.setBackground(new Color(74, 174, 213));
+		regresar.setFont(Campos);
+		regresar.setForeground(Color.white);
+		this.add(regresar);
+		
 		return tabla;
 	}
 
@@ -774,6 +824,13 @@ public class Ventana2 extends JFrame{
 		campo4.setBorder(BorderFactory.createMatteBorder(5, 5, 20, 10, new Color(194, 73, 98)));
 		resultado.add(campo4);
 		
+		JButton regresar =  volver();
+		regresar.setBounds(100,600,100,30);
+		regresar.setBackground(new Color(74, 174, 213));
+		regresar.setFont(Campos);
+		regresar.setForeground(Color.white);
+		this.add(regresar);
+		
 		return interes;
 	}
 	
@@ -813,42 +870,192 @@ public class Ventana2 extends JFrame{
 	
 	public JPanel recuperar() {{
 		JPanel recuperar = new JPanel();
-		recuperar.setSize(1000,800);
+		recuperar.setSize(800,500);
 		setLayout(null);
 		JLabel recup = new JLabel("Recuperar Cuenta");
-		recup.setFont(new Font("Century Gothic", Font.BOLD, 18));
-		recup.setBackground(fondoVerdeOs);
-		recup.setBounds(203, 44, 172, 34);
+		recup.setFont(Titulo);
+		recup.setBounds(380, 100, 300, 35);
 		add(recup);
+		
+		JPanel panelText = new JPanel();
+		panelText.setBackground(new Color (227, 227, 227));
+		panelText.setBounds(100, 50, 800, 500);
+		add(panelText);
+		panelText.setLayout(null);
+		
+		JLabel ingreseC = new JLabel("Ingrese el correo asociado a su cuenta");
+		ingreseC.setFont(Campos);
+		ingreseC.setBounds(250, 120, 340, 30);
+		panelText.add(ingreseC);
+		
+		JTextField campoC = new JTextField();
+		campoC.setBounds(270, 180, 270, 30);
+		campoC.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		panelText.add(campoC);
+	
+		
+		JButton enlace = new JButton("Enviar enlace");
+		enlace.setForeground(new Color(255, 255, 255));
+		enlace.setFont(Campos);
+		enlace.setBackground(new Color(74, 174, 213));
+		enlace.setBounds(270, 240, 270, 50);
+		panelText.add(enlace);
+		
+		JLabel textoInfo = new JLabel();
+		textoInfo.setBackground(new Color (227, 227, 227));
+		textoInfo.setFont(Campos);
+		textoInfo.setText("<html>Enviaremos un enlace de recuperacion a su correo eletrónico. El enlace solo tiene una vigencia de 20 minutos, asegurese de revisar su seccion de spam<html>");
+		textoInfo.setBounds(250, 310, 340, 120);
+		
+		JButton regresar =  volver();
+		regresar.setBounds(100,600,100,30);
+		regresar.setBackground(new Color(74, 174, 213));
+		regresar.setFont(Campos);
+		regresar.setForeground(Color.white);
+		this.add(regresar);
+		
+		panelText.add(textoInfo);
 		
 		return recuperar;
 		}
 	}
 
 	public JPanel alta() {{
-		JPanel alta = new JPanel();
-		alta.setSize(1000,800);
+		JPanel alt = new JPanel();
+		alt.setSize(800,500);
 		setLayout(null);
-		JLabel alt = new JLabel("Dar cuenta de alta");
-		alt.setFont(new Font("Century Gothic", Font.BOLD, 18));
-		alt.setBackground(fondoVerdeOs);
-		alt.setBounds(203, 44, 172, 34);
-		add(alt);
+		JLabel recup = new JLabel("Dar de Alta");
+		recup.setFont(Titulo);
+		recup.setBounds(420, 100, 300, 35);
+		add(recup);
 		
-		return alta;
+		JPanel panelText = new JPanel();
+		panelText.setBackground(new Color (227, 227, 227));
+		panelText.setBounds(100, 50, 800, 500);
+		add(panelText);
+		panelText.setLayout(null);
+		
+		JLabel ingreseC = new JLabel("Ingrese el correo asociado a su usuario");
+		ingreseC.setFont(Campos);
+		ingreseC.setBounds(250, 120, 340, 30);
+		panelText.add(ingreseC);
+		
+		JTextField campoC = new JTextField();
+		campoC.setBounds(270, 180, 270, 30);
+		campoC.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		panelText.add(campoC);
+	
+		
+		JButton enlace = new JButton("Código de verificacion");
+		enlace.setForeground(new Color(255, 255, 255));
+		enlace.setFont(Campos);
+		enlace.setBackground(new Color(74, 174, 213));
+		enlace.setBounds(270, 240, 270, 50);
+		panelText.add(enlace);
+		
+		JLabel ingreseN = new JLabel("<html>Ingrese el numero de verificacion enviado a su correo<html>");
+		ingreseN.setFont(Campos);
+		ingreseN.setBounds(250, 300, 340, 50);
+		panelText.add(ingreseN);
+		
+		JTextField n1 = new JTextField();
+		n1.setColumns(1);
+		n1.setBounds(270, 370, 40, 50);
+		n1.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		panelText.add(n1);
+		
+		JTextField n2 = new JTextField();
+		n2.setColumns(1);
+		n2.setBounds(360, 370, 40, 50);
+		n2.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		panelText.add(n2);
+		
+		JTextField n3 = new JTextField();
+		n3.setColumns(1);
+		n3.setBounds(440, 370, 40, 50);
+		n3.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		panelText.add(n3);
+		
+		JTextField n4 = new JTextField();
+		n4.setColumns(1);
+		n4.setBounds(520, 370, 40, 50);
+		n4.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+		panelText.add(n4);
+		
+		JButton alta = new JButton("Dar usuario de alta");
+		alta.setForeground(new Color(255, 255, 255));
+		alta.setFont(Campos);
+		alta.setBackground(new Color(74, 174, 213));
+		alta.setBounds(270, 440, 270, 50);
+		panelText.add(alta);
+
+		JButton regresar =  volver();
+		regresar.setBounds(100,600,100,30);
+		regresar.setBackground(new Color(74, 174, 213));
+		regresar.setFont(Campos);
+		regresar.setForeground(Color.white);
+		this.add(regresar);
+		
+		return alt;
 		}
 	}
 	
 	public JPanel baja() {{
 
 		JPanel baja = new JPanel();
-		baja.setSize(1000,800);
+		baja.setSize(800,500);
 		setLayout(null);
-		JLabel bJ = new JLabel("Dar cuenta de bJ");
-		bJ.setFont(new Font("Century Gothic", Font.BOLD, 18));
-		bJ.setBackground(fondoVerdeOs);
-		bJ.setBounds(203, 44, 172, 34);
-		add(bJ);
+		JLabel bj = new JLabel("Dar de Baja");
+		bj.setFont(Titulo);
+		bj.setBounds(420, 100, 300, 35);
+		add(bj);
+		
+		JPanel panelText = new JPanel();
+		panelText.setBackground(new Color (227, 227, 227));
+		panelText.setBounds(100, 50, 800, 500);
+		add(panelText);
+		panelText.setLayout(null);
+		
+		JLabel cuenta = new JLabel("Usuario: UserGenericName#56");
+		cuenta.setFont(Campos);
+		cuenta.setBounds(250, 120, 380, 30);
+		panelText.add(cuenta);
+		
+		JLabel correo = new JLabel("Correo electrónico: UserGenericEmail@gmail.com");
+		correo.setFont(Campos);
+		correo.setBounds(250, 180, 395, 30);
+		panelText.add(correo);
+		
+		JLabel contra = new JLabel("Contraseña: UserGenericPassword%571");
+		contra.setFont(Campos);
+		contra.setBounds(250, 240, 380, 30);
+		panelText.add(contra);
+		
+		JLabel ingreseN = new JLabel("<html>¿Desea eliminar su cuenta?<html>");
+		ingreseN.setFont(Campos);
+		ingreseN.setBounds(300, 300, 340, 50);
+		panelText.add(ingreseN);
+		
+		JButton borrar = new JButton("Eliminar cuenta");
+		borrar.setForeground(new Color(255, 255, 255));
+		borrar.setFont(Campos);
+		borrar.setBackground(new Color(240, 54, 45));
+		borrar.setBounds(440, 350, 180, 50);
+		panelText.add(borrar);
+
+		JButton cancel = new JButton("Cancelar");
+		cancel.setForeground(new Color(255,255,255));
+		cancel.setFont(Campos);
+		cancel.setBackground(new Color(39, 118, 188));
+		cancel.setBounds(240, 350, 180, 50);
+		panelText.add(cancel);
+		
+		JButton regresar =  volver();
+		regresar.setBounds(100,600,100,30);
+		regresar.setBackground(new Color(74, 174, 213));
+		regresar.setFont(Campos);
+		regresar.setForeground(Color.white);
+		this.add(regresar);
 		
 		return baja;
 		}
@@ -857,13 +1064,56 @@ public class Ventana2 extends JFrame{
 	public JPanel comoCrear() {{
 
 		JPanel comoCrear = new JPanel();
-		comoCrear.setSize(1000,800);
+		comoCrear.setSize(800,500);
 		setLayout(null);
-		JLabel comoCr = new JLabel("¿Como crear un usuario?");
-		comoCr.setFont(new Font("Century Gothic", Font.BOLD, 18));
-		comoCr.setBackground(fondoVerdeOs);
-		comoCr.setBounds(203, 44, 172, 34);
+		JLabel comoCr = new JLabel("Cómo crear un usuario");
+		comoCr.setFont(Titulo);
+		comoCr.setBounds(350, 100, 380, 35);
 		add(comoCr);
+		
+		JPanel panelText = new JPanel();
+		panelText.setBackground(new Color (227, 227, 227));
+		panelText.setBounds(100, 50, 800, 500);
+		add(panelText);
+		panelText.setLayout(null);
+		
+		JLabel paso1 = new JLabel("<html>1.- Dirijase el apartado <html>");
+		paso1.setFont(Campos);
+		paso1.setBounds(250, 130, 340, 30);
+		panelText.add(paso1);
+		
+		JLabel textMar = new JLabel("crear cuenta");
+		textMar.setFont(Campos);
+		textMar.setForeground(fondoAzulOs);
+		textMar.setBounds(250, 150, 340, 30);
+		panelText.add(textMar);
+		
+		JLabel paso2 = new JLabel("<html>2.- Deberá ingresar un nombre de usuario <html>");
+		paso2.setFont(Campos);
+		paso2.setBounds(250, 195, 340, 30);
+		panelText.add(paso2);
+		
+		JLabel paso3 = new JLabel("<html>3.- Puede colocar informacion biográfica u omitir el campo <html>");
+		paso3.setFont(Campos);
+		paso3.setBounds(250, 250, 340, 50);
+		panelText.add(paso3);
+		
+		JLabel paso4 = new JLabel("<html>4.- Posteriormente deberá indicar preferencias y aceptar los terminos de uso <html>");
+		paso4.setFont(Campos);
+		paso4.setBounds(250, 330, 340, 60);
+		panelText.add(paso4);
+		
+		JLabel paso5 = new JLabel("<html>5.- Finalmente presiones el boton Crear cuenta <html>");
+		paso5.setFont(Campos);
+		paso5.setBounds(250, 420, 340, 50);
+		panelText.add(paso5);
+		
+		JButton regresar =  volver();
+		regresar.setBounds(100,600,100,30);
+		regresar.setBackground(new Color(74, 174, 213));
+		regresar.setFont(Campos);
+		regresar.setForeground(Color.white);
+		this.add(regresar);
 		
 		return comoCrear;
 		}
@@ -872,13 +1122,56 @@ public class Ventana2 extends JFrame{
 	public JPanel comoAcc() {{
 
 		JPanel comoAcc = new JPanel();
-		comoAcc.setSize(1000,800);
+		comoAcc.setSize(800,500);
 		setLayout(null);
-		JLabel comoAc = new JLabel("Como acceder al sistema");
-		comoAc.setFont(new Font("Century Gothic", Font.BOLD, 18));
-		comoAc.setBackground(fondoVerdeOs);
-		comoAc.setBounds(203, 44, 172, 34);
-		add(comoAc);
+		JLabel comoCr = new JLabel("Cómo acceder al sistema");
+		comoCr.setFont(Titulo);
+		comoCr.setBounds(350, 100, 380, 35);
+		add(comoCr);
+		
+		JPanel panelText = new JPanel();
+		panelText.setBackground(new Color (227, 227, 227));
+		panelText.setBounds(100, 50, 800, 500);
+		add(panelText);
+		panelText.setLayout(null);
+		
+		JLabel paso1 = new JLabel("<html>1.- Dirijase el apartado <html>");
+		paso1.setFont(Campos);
+		paso1.setBounds(250, 130, 340, 30);
+		panelText.add(paso1);
+		
+		JLabel textMar = new JLabel("Login");
+		textMar.setFont(Campos);
+		textMar.setForeground(fondoAzulOs);
+		textMar.setBounds(250, 150, 340, 30);
+		panelText.add(textMar);
+		
+		JLabel paso2 = new JLabel("<html>2.- Deberá ingresar su nombre de usuario o correo electrónico <html>");
+		paso2.setFont(Campos);
+		paso2.setBounds(250, 195, 340, 50);
+		panelText.add(paso2);
+		
+		JLabel paso3 = new JLabel("<html>3.- Deberá ingresar su contraseña  <html>");
+		paso3.setFont(Campos);
+		paso3.setBounds(250, 270, 340, 30);
+		panelText.add(paso3);
+		
+		JLabel paso4 = new JLabel("<html>4.- Puede indicar si desea que el sistema recuerde su inicio de sesión <html>");
+		paso4.setFont(Campos);
+		paso4.setBounds(250, 330, 340, 60);
+		panelText.add(paso4);
+		
+		JLabel paso5 = new JLabel("<html>5.- Finalmente presione el botón login <html>");
+		paso5.setFont(Campos);
+		paso5.setBounds(250, 420, 340, 50);
+		panelText.add(paso5);
+		
+		JButton regresar =  volver();
+		regresar.setBounds(100,600,100,30);
+		regresar.setBackground(new Color(74, 174, 213));
+		regresar.setFont(Campos);
+		regresar.setForeground(Color.white);
+		this.add(regresar);
 		
 		return comoAcc;
 		}
@@ -887,13 +1180,51 @@ public class Ventana2 extends JFrame{
 	public JPanel contraOlvd() {{
 
 		JPanel contraOlvd = new JPanel();
-		contraOlvd.setSize(1000,800);
+		contraOlvd.setSize(800,500);
 		setLayout(null);
-		JLabel contraO = new JLabel("Dar cuenta de contraO");
-		contraO.setFont(new Font("Century Gothic", Font.BOLD, 18));
-		contraO.setBackground(fondoVerdeOs);
-		contraO.setBounds(203, 44, 172, 34);
-		add(contraO);
+		JLabel comoCr = new JLabel("Olvidé mi contraseña");
+		comoCr.setFont(Titulo);
+		comoCr.setBounds(350, 100, 380, 35);
+		add(comoCr);
+		
+		JPanel panelText = new JPanel();
+		panelText.setBackground(new Color (227, 227, 227));
+		panelText.setBounds(100, 50, 800, 500);
+		add(panelText);
+		panelText.setLayout(null);
+		
+		JLabel paso1 = new JLabel("<html>1.- Dirijase el apartado <html>");
+		paso1.setFont(Campos);
+		paso1.setBounds(250, 130, 340, 30);
+		panelText.add(paso1);
+		
+		JLabel textMar = new JLabel("Recuperar cuenta");
+		textMar.setFont(Campos);
+		textMar.setForeground(fondoAzulOs);
+		textMar.setBounds(250, 150, 340, 30);
+		panelText.add(textMar);
+		
+		JLabel paso2 = new JLabel("<html>2.- Deberá ingresar su correo electónico asociado a su cuenta  <html>");
+		paso2.setFont(Campos);
+		paso2.setBounds(250, 195, 340, 50);
+		panelText.add(paso2);
+		
+		JLabel paso3 = new JLabel("<html>3.- Deberá presionar el botón para enviar un enlace al correo proporcionado <html>");
+		paso3.setFont(Campos);
+		paso3.setBounds(250, 270, 340, 50);
+		panelText.add(paso3);
+		
+		JLabel paso4 = new JLabel("<html>4.- Siga los pasos que se indiquen en el correo recibido  <html>");
+		paso4.setFont(Campos);
+		paso4.setBounds(250, 350, 340, 60);
+		panelText.add(paso4);
+		
+		JButton regresar =  volver();
+		regresar.setBounds(100,600,100,30);
+		regresar.setBackground(new Color(74, 174, 213));
+		regresar.setFont(Campos);
+		regresar.setForeground(Color.white);
+		this.add(regresar);
 		
 		return contraOlvd;
 		}
