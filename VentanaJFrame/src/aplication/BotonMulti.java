@@ -19,6 +19,7 @@ public class BotonMulti extends JFrame {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(500, 600);
+		this.setLocationRelativeTo(null);
 		this.setBackground(Color.green);
 		this.add(botonM());
 	}
@@ -31,7 +32,7 @@ public class BotonMulti extends JFrame {
 		
 
 		JButton boton = new JButton("Presioname");
-		boton.setBounds(240,500,100,50);
+		boton.setBounds(200,500,130,50);
 		boton.setBackground(new Color(227,227,227));
 		botonMulti.add(boton);
 		boton.addActionListener(new ActionListener() {
@@ -40,7 +41,7 @@ public class BotonMulti extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Random aleatorio = new Random();
 				JButton boton2 = new JButton("Hola"+aleatorio.nextDouble());
-				boton2.setSize(aleatorio.nextInt(100), aleatorio.nextInt(200));
+				boton2.setSize(aleatorio.nextInt(100), aleatorio.nextInt(100));
 				boton2.setLocation(aleatorio.nextInt(500),aleatorio.nextInt(600));
 				boton2.setBackground(new Color(aleatorio.nextInt(255),aleatorio.nextInt(255),aleatorio.nextInt(255)));
 				botonMulti.add(boton2);
@@ -50,8 +51,11 @@ public class BotonMulti extends JFrame {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						JOptionPane.showMessageDialog(null,boton2.getText());
-						
+						int eleccion =JOptionPane.showConfirmDialog(null,boton2.getText()+"\nDesea eliminar el boton?","Confrimacion de borrado",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+						if(eleccion == JOptionPane.YES_OPTION) {
+							botonMulti.remove(boton2);
+							botonMulti.repaint();
+						}
 					}
 					
 				});
