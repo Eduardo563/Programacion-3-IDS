@@ -9,12 +9,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
+
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
@@ -27,6 +31,7 @@ public class Puzzle15 extends JFrame {
 	private JPanel contentPane;
 	Font cuerpo = new Font("SansSerif",Font.PLAIN,18);
 	Font negrita = new Font("SansSerif",Font.BOLD,30);
+	Font grande = new Font("Arial",Font.BOLD,35);
 	
 	Color botonC = new Color(238, 250, 246);
 	Color botonBor = new Color(42, 214, 160);
@@ -35,6 +40,14 @@ public class Puzzle15 extends JFrame {
 	Random aleatorio = new Random();
 	
 	ArrayList <Integer> numeros = new ArrayList<Integer>();
+	
+	Timer cronometro;
+	int milisegundos=0;
+	int segundos =0;
+	int minutos =0;
+	boolean activo = false;
+	JLabel tiempo;
+	boolean ganador=false;
 	/**
 	 * Launch the application.
 	 */
@@ -55,8 +68,10 @@ public class Puzzle15 extends JFrame {
 	 * Create the frame.
 	 */
 	public Puzzle15() {
+		setLocationRelativeTo(null);
+		this.setTitle("Juego Puzzle 15");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 730, 712);
+		setBounds(100, 100, 914, 867);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(40, 20, 20, 20));
 
@@ -83,8 +98,55 @@ public class Puzzle15 extends JFrame {
 		JPanel panelDer = new JPanel();
 		contentPane.add(panelDer, BorderLayout.EAST);
 		panelDer.setBackground(new Color(62, 162, 215));
-		JLabel espacioDer = new JLabel("          ");
-		panelDer.add(espacioDer);
+		panelDer.setPreferredSize(new Dimension(200,700));
+		panelDer.setLayout(null);
+		JLabel titulo = new JLabel ("Puzzle 15");
+		titulo.setBounds(10, 66, 190, 68);
+		panelDer.add(titulo);
+		titulo.setFont(new Font("Ink Free", Font.BOLD, 39));
+		
+		tiempo = new JLabel(" 00: 00: 000");
+		tiempo.setHorizontalAlignment(JLabel.HORIZONTAL);
+		tiempo.setFont(new Font("Harlow Solid Italic", Font.PLAIN, 38));
+		tiempo.setBounds(10,418,190,94);
+		panelDer.add(tiempo);
+		
+		JButton iniciar = new JButton("Iniciar");
+		iniciar.setHorizontalAlignment(JButton.CENTER);
+		iniciar.setBackground(new Color(61, 203, 33));
+		iniciar.setForeground(new Color(255, 255, 255));
+		iniciar.setBounds(10, 187, 180, 62);
+		iniciar.setBorder(BorderFactory.createLineBorder(new Color(33, 203, 167), 2));
+		iniciar.setFont(new Font("Consolas", Font.BOLD, 35));
+		
+		panelDer.add(iniciar);
+		iniciar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!activo && ganador == false) {
+					activar();
+					contarCrono();
+				}
+			}
+		});
+		
+		JButton pausa = new JButton("Pausar");
+		pausa.setForeground(new Color(255, 255, 255));
+		pausa.setBackground(new Color(245, 180, 57));
+		pausa.setFont(new Font("Consolas", Font.BOLD, 33));
+		pausa.setBounds(10, 306, 180, 62);
+		pausa.setBorder(BorderFactory.createLineBorder(new Color(33, 203, 167), 2));
+		panelDer.add(pausa);
+		pausa.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (activo) {
+					pausarCrono();
+				}
+			}
+		});
 		
 		JPanel panelNum = new JPanel();
 		panelNum.setBorder(new EmptyBorder(5,5,20,5));
@@ -93,7 +155,8 @@ public class Puzzle15 extends JFrame {
 		panelNum.setBackground(new Color(62, 162, 215));
 		
 		JButton reiniciar = new JButton("Reiniciar");
-		reiniciar.setBackground(Color.white);
+		reiniciar.setForeground(Color.white);
+		reiniciar.setBackground(new Color(245, 100, 57));
 		reiniciar.setPreferredSize(new Dimension(200,50));
 		reiniciar.setFont(negrita);
 		reiniciar.setBorder(BorderFactory.createLineBorder(botonBor, 3, true));
@@ -103,11 +166,9 @@ public class Puzzle15 extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				revolver();
-				
+				reiniciar();
 			}
-			
 		});
-		
 		numeros.add(1);
 		numeros.add(2);
 		numeros.add(3);
@@ -368,7 +429,49 @@ public class Puzzle15 extends JFrame {
 		b14.setText(numeros.get(14)+"");
 		b15.setText(numeros.get(15)+"");
 		b16.setText(numeros.get(0)+"");
+		//muestra los numeros aleatorios y desactivados hasta que se presiones iniciar
+		revolver();
+		desactivar();
+	}
+	//iniciar el cronometro
+	public void contarCrono() {
+		activo=true;
+		cronometro = new Timer(10,new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				milisegundos+=10;
+				if (milisegundos==1000) {
+					milisegundos =0;
+					segundos++;
+					if (segundos == 60) {
+						segundos =0;
+						minutos++;
+					}
+				}
+				tiempo.setText(minutos+": "+segundos+" :"+milisegundos);
+			}
 			
+		});
+		cronometro.start();
+	}
+	//pausar el cronometro
+	public void pausarCrono() {
+		activo = false;
+		if (cronometro != null) {
+			cronometro.stop();
+		}
+		desactivar();
+	}
+	//reiniciar el cronometro
+	public void reiniciar() {
+		activo = false;
+		milisegundos=0; segundos=0; minutos=0;
+		tiempo.setText(" 00: 00: 000");
+		if (cronometro != null) {
+			cronometro.stop();
+		}
+		desactivar();
 	}
 	//Revolver los botones
 	public void revolver() {
@@ -382,8 +485,10 @@ public class Puzzle15 extends JFrame {
 				conjunto[i].setText(""+num);
 			}	
 		}
+		revalidate();
+		repaint();
 	}
-	
+	//Mover los botones
 	public void intercambio(JButton boton) {
 		int posicion =0;
 		for(int i=0;i<conjunto.length;i++) {
@@ -398,25 +503,60 @@ public class Puzzle15 extends JFrame {
 		if(x>0  && conjunto[posicion - 1].getText().equals("")) {
 			conjunto[posicion - 1].setText(boton.getText());
 			boton.setText("");
+			victoria();
 			return;
 		}
 		//checar derecha
 		if (x<3 && conjunto[posicion + 1].getText().equals("")) {
 			conjunto[posicion + 1].setText(boton.getText());
 			boton.setText("");
+			victoria();
 			return;
 		}
 		//checar arriba
 		if (y>0 && conjunto[posicion - 4].getText().equals("")) {
 			conjunto[posicion - 4].setText(boton.getText());
 			boton.setText("");
+			victoria();
 			return;
 		}
 		//checar abajo
 		if (y<3 && conjunto[posicion + 4].getText().equals("")) {
 			conjunto[posicion + 4].setText(boton.getText());
 			boton.setText("");
+			victoria();
 			return;
 		}
+		
 	}
+	//Verificar si hay un ganador
+	public void victoria() {
+		boolean ganador = true;
+		for(int i=0; i<15; i++) {
+			if (!conjunto[i].getText().equals(Integer.toString(i+1))) {
+				ganador = false;
+			}
+		}
+		if (!conjunto[15].getText().equals("")) {
+			ganador = false;
+		}
+		if (ganador ) {
+			pausarCrono();
+			desactivar();
+			JOptionPane.showMessageDialog(null, "¡Felicidades! Has ganado un auto","Ganador",JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+	//funcion para desactivar todos los botones
+	public void desactivar () {
+		for(int i=0; i<conjunto.length;i++) {
+			conjunto[i].setEnabled(false);
+		}
+	}
+	//funcion para activar todos los botones
+	public void activar() {
+		for(int i=0; i<conjunto.length;i++) {
+			conjunto[i].setEnabled(true);
+		} 
+	}
+	//CREDITOS para "ProgramaTutos" ya que fue guia para la implementacion de timer
 }
