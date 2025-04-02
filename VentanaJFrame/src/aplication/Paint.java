@@ -120,6 +120,15 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 		btnNewButton_1.setIcon(new ImageIcon(Paint.class.getResource("/aplication/eraser (2).png")));
 		btnNewButton_1.setBounds(100, 11, 65, 52);
 		subHerr.add(btnNewButton_1);
+		btnNewButton_1.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tool=9;
+				
+			}
+			
+		});
 		
 		JButton btnNewButton_6 = new JButton("");
 		btnNewButton_6.setIcon(new ImageIcon(Paint.class.getResource("/aplication/pincel.png")));
@@ -477,6 +486,10 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 			lienzo.repaint();
 			puntos.add(new puntosPer(e.getX(),e.getY(),colorAct,grosor));
 		}
+		if(tool==9) {
+			figuras.add(new Figura(e.getX(),e.getY(),80,80,Color.white,grosor,tool));
+			lienzo.repaint();
+		}
 	}
 
 	@Override
@@ -532,6 +545,11 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 	    			   g2.setColor(temp.c);
 	    			   g2.setStroke(new BasicStroke(temp.g));
 	    			   g2.drawRect(temp.x, temp.y, 80, 80);
+	    		   }
+	    		   else if(temp.t==9) {
+	    			   g2.setColor(temp.c);
+	    			   g2.setStroke(new BasicStroke(temp.g));
+	    			   g2.fillRect(temp.x, temp.y, 80, 80);
 	    		   }
 	    		   
 	    	   }
