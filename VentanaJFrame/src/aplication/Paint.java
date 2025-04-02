@@ -42,12 +42,13 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 	Border bordeSec = BorderFactory.createLineBorder(Color.GRAY, 3);
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private ArrayList<Point> puntos = new ArrayList<Point>();
+	private ArrayList<puntosPer> puntos = new ArrayList<puntosPer>();
 	Color colorAct = Color.black;
 	int grosor;
-	List<List<Point>> listaDePuntos = new ArrayList<>();
-	List<Color> coloresUsados = new ArrayList<>();
-	List<Integer> grosores = new ArrayList<>();
+	List<List<puntosPer>> listaDePuntos = new ArrayList<>();
+	
+	private ArrayList<Figura> figuras = new ArrayList<Figura>();
+	private int tool = 1;
 	lienzoConf lienzo;
 	/**
 	 * Launch the application.
@@ -105,6 +106,15 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 		btnNewButton.setIcon(new ImageIcon(Paint.class.getResource("/aplication/pencil (1).png")));
 		btnNewButton.setBounds(10, 11, 65, 52);
 		subHerr.add(btnNewButton);
+		btnNewButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tool = 1;
+				
+			}
+			
+		});
 		
 		JButton btnNewButton_1 = new JButton("");
 		btnNewButton_1.setIcon(new ImageIcon(Paint.class.getResource("/aplication/eraser (2).png")));
@@ -172,21 +182,57 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 		btnNewButton_2.setIcon(new ImageIcon(Paint.class.getResource("/aplication/circulo.png")));
 		btnNewButton_2.setBounds(10, 11, 65, 51);
 		formas.add(btnNewButton_2);
+		btnNewButton_2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tool=2;
+				
+			}
+			
+		});
 		
 		JButton btnNewButton_3 = new JButton("");
 		btnNewButton_3.setIcon(new ImageIcon(Paint.class.getResource("/aplication/rectangulo.png")));
 		btnNewButton_3.setBounds(95, 11, 65, 51);
 		formas.add(btnNewButton_3);
+		btnNewButton_3.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tool=3;
+				
+			}
+			
+		});
 		
 		JButton btnNewButton_4 = new JButton("");
 		btnNewButton_4.setIcon(new ImageIcon(Paint.class.getResource("/aplication/triangle.png")));
 		btnNewButton_4.setBounds(178, 11, 65, 51);
 		formas.add(btnNewButton_4);
+		btnNewButton_4.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tool=4;
+				
+			}
+			
+		});
 		
 		JButton btnNewButton_5 = new JButton("");
 		btnNewButton_5.setIcon(new ImageIcon(Paint.class.getResource("/aplication/line.png")));
 		btnNewButton_5.setBounds(263, 11, 65, 51);
 		formas.add(btnNewButton_5);
+		btnNewButton_5.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tool=5;
+				
+			}
+			
+		});
 		
 		JPanel colores = new JPanel();
 		colores.setPreferredSize(new Dimension(130,740));
@@ -319,7 +365,6 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 		personalizado.setBounds(31, 290, 65, 47);
 		colores.add(personalizado);
 		personalizado.setBorder(BorderFactory.createBevelBorder(0, Color.black, Color.gray));
-		JColorChooser colorPersonalizado = new JColorChooser(Color.black);
 		personalizado.addActionListener(new ActionListener() {
 
 			@Override
@@ -349,8 +394,7 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 				lienzo.removeAll();
 				puntos.clear();
 				listaDePuntos.clear();
-				grosores.clear();
-				coloresUsados.clear();
+				figuras.clear();
 				repaint();
 			}
 			
@@ -371,36 +415,50 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		switch(tool) {
+		case 2:	
+			figuras.add(new Figura(e.getX(),e.getY(),80,80,colorAct,grosor,tool));
+			repaint();
+		break;
+		case 3:
+			figuras.add(new Figura(e.getX(),e.getY(),80,80,colorAct,grosor,tool));
+			repaint();
+		break;
+		}
 		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if (tool==5) {
+			puntos.add(new puntosPer(e.getX(),e.getY(),colorAct,grosor));
+		}
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
-		//crear una copia de los puntos
-		ArrayList ArrList2  = (ArrayList)puntos.clone();
-		
-		//se guarda en el historial de dibujos
-		listaDePuntos.add(ArrList2);
-		
-		//Guardar el color usado
-		coloresUsados.add(colorAct);
-		
-		//Guardar el grosor del pincel
-		grosores.add(grosor);
-		
-		//limpiamos el trazo actual
-		puntos.clear();
-		
-		lienzo.repaint();
-		
+		if (tool==1) {
+			//crear una copia de los puntos
+			ArrayList ArrList2  = (ArrayList)puntos.clone();
+			
+			//se guarda en el historial de dibujos
+			listaDePuntos.add(ArrList2);
+			
+			
+			//limpiamos el trazo actual
+			puntos.clear();
+			
+			lienzo.repaint();
+		}
+		else if (tool==5) {
+			puntos.add(new puntosPer(e.getX(),e.getY(),colorAct,grosor));
+			ArrayList ArrList2  = (ArrayList)puntos.clone();
+			listaDePuntos.add(ArrList2);
+			puntos.clear();
+			
+			lienzo.repaint();
+		}
 	}
 
 	@Override
@@ -415,11 +473,10 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		lienzo.repaint();
-		
-		puntos.add(e.getPoint());
-		
-		
+		if (tool==1) {
+			lienzo.repaint();
+			puntos.add(new puntosPer(e.getX(),e.getY(),colorAct,grosor));
+		}
 	}
 
 	@Override
@@ -438,44 +495,77 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 			
 			Graphics2D g2 = (Graphics2D) g;
 			
-			int posicionColorGrosor=0;
-		       for (Iterator iterator = listaDePuntos.iterator(); iterator.hasNext();posicionColorGrosor++) {
-				List<Point> trazo = (List<Point>) iterator.next();
-				
-				Color color = coloresUsados.get(posicionColorGrosor);
-				g2.setColor(color);
-				g2.setStroke(new BasicStroke(grosores.get(posicionColorGrosor)));
-				
-					if(trazo.size()>1) {
-			    	   
+		       for (Iterator iterator = listaDePuntos.iterator(); iterator.hasNext();) {
+		    	   List<puntosPer> trazo = (List<puntosPer>) iterator.next();
+	
+		    	   if(trazo.size()>1) {
 			    	   for (int i = 1; i < trazo.size(); i++) {
-			    		   
-			    		   Point p1 = trazo.get(i-1);
-			    		   Point p2 = trazo.get(i);
-			    		   
-			    		   
+			    		   puntosPer p1 = trazo.get(i-1);
+			    		   puntosPer p2 = trazo.get(i);
+			    		   g2.setColor(p1.c);
+			    		   g2.setStroke(new BasicStroke(p1.g));
 			    		   g2.drawLine(p1.x,p1.y,p2.x,p2.y);
 			    	   }
-			    	   
 			       }
-				
 		       }
-			
-			g2.setColor(colorAct);
-			g2.setStroke(new BasicStroke(grosor));
-			
 			if (puntos.size()>1) {
-		    	   
-		    	   for (int i = 1; i < puntos.size(); i++) {
-		    		   
-		    		   Point p1 = puntos.get(i-1);
-		    		   Point p2 = puntos.get(i);
-		    		   
-		    		   g2.drawLine(p1.x,p1.y,p2.x,p2.y);
-		    	   }
-		    	   
-		       }
+				for (int i = 1; i < puntos.size(); i++) {
+	    		   
+	    		   puntosPer p1 = puntos.get(i-1);
+	    		   puntosPer p2 = puntos.get(i);
+	    		   g2.setColor(p1.c);
+	    		   g2.setStroke(new BasicStroke(p1.g));
+	    		   g2.drawLine(p1.x,p1.y,p2.x,p2.y);
+	    	   }
+	    	   
+	       }
 			   
+			if (figuras.size()>0 ) {
+	    	   for (int i = 0; i < figuras.size(); i++) {
+	    		   Figura temp =figuras.get(i);
+	    		   if (temp.t ==2) {
+	    			   g2.setColor(temp.c);
+	    			   g2.setStroke(new BasicStroke(temp.g));
+	    			   g2.drawOval(temp.x, temp.y, 80, 80);
+	    		   }
+	    		   else if(temp.t ==3) {
+	    			   g2.setColor(temp.c);
+	    			   g2.setStroke(new BasicStroke(temp.g));
+	    			   g2.drawRect(temp.x, temp.y, 80, 80);
+	    		   }
+	    		   
+	    	   }
+	    	   
+	       }
+			   
+		}
+	}
+	
+	class Figura{
+		public int x,y,w,h,t;
+		public Color c;
+		public int g;
+		public Figura(int x, int y, int w, int h,Color c, int g,int t) {
+			this.x=x;
+			this.y=y;
+			this.w=w;
+			this.h=h;
+			this.t=t;
+			this.c=c;
+			this.g=g;
+		}
+	}
+	
+	class puntosPer{
+		public int x,y;
+		public Color c;
+		public int g;
+		
+		public puntosPer(int x, int y, Color c, int g) {
+			this.x=x;
+			this.y=y;
+			this.c=c;
+			this.g=g;
 		}
 	}
 
