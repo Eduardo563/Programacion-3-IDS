@@ -35,6 +35,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.JToggleButton;
+import javax.swing.JSpinner;
 
 public class Paint extends JFrame implements MouseListener, MouseMotionListener  {
 
@@ -49,6 +51,8 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 	
 	private ArrayList<Figura> figuras = new ArrayList<Figura>();
 	private int tool = 1;
+	private boolean relleno=false;
+	private int tamañoFig=30;
 	lienzoConf lienzo;
 	/**
 	 * Launch the application.
@@ -75,7 +79,7 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 	
 	public void inicioPaint() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1108, 745);
+		setBounds(100, 100, 1479, 887);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -176,7 +180,7 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 		
 		JPanel formas = new JPanel();
 		formas.setBorder(BorderFactory.createMatteBorder(0, 2, 0, 0, new Color(207, 207, 207)));
-		formas.setBounds(723, 0, 367, 89);
+		formas.setBounds(723, 0, 700, 89);
 		formas.setBackground(new Color(233, 231, 216));
 		herramientas.add(formas);
 		formas.setLayout(null);
@@ -242,6 +246,53 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 			}
 			
 		});
+		
+		JToggleButton tglbtnNewToggleButton = new JToggleButton("");
+		tglbtnNewToggleButton.setIcon(new ImageIcon(Paint.class.getResource("/aplication/black-square.png")));
+		tglbtnNewToggleButton.setBounds(351, 11, 65, 51);
+		formas.add(tglbtnNewToggleButton);
+		tglbtnNewToggleButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				relleno = tglbtnNewToggleButton.isSelected();
+				
+			}
+			
+		});
+		
+		JLabel lblNewLabel_2 = new JLabel("Relleno");
+		lblNewLabel_2.setForeground(new Color(87, 87, 87));
+		lblNewLabel_2.setFont(new Font("Segoe UI Variable", Font.PLAIN, 17));
+		lblNewLabel_2.setBounds(351, 69, 72, 14);
+		formas.add(lblNewLabel_2);
+		
+		JSlider slider_1 = new JSlider();
+		slider_1.setBounds(450, 24, 247, 38);
+		slider_1.setValue(30);
+		slider_1.setMaximum(400);
+		slider_1.setMinimum(0);
+		slider_1.setPaintLabels(true);
+		slider_1.setMajorTickSpacing(50);
+		formas.add(slider_1);
+		slider_1.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				tamañoFig = slider_1.getValue();
+			}
+			
+		});
+		
+		
+		JLabel lblNewLabel_3 = new JLabel("Tamaño");
+		lblNewLabel_3.setFont(new Font("Segoe UI Variable", Font.PLAIN, 17));
+		lblNewLabel_3.setForeground(new Color(87, 87, 87));
+		lblNewLabel_3.setBounds(546, 69, 76, 14);
+		formas.add(lblNewLabel_3);
+		
+		
+		
 		
 		JPanel colores = new JPanel();
 		colores.setPreferredSize(new Dimension(130,740));
@@ -415,7 +466,7 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 		fondoLienzo.setLayout(null);
 		
 		lienzo = new lienzoConf();
-		lienzo.setBounds(10, 11, 990, 729);
+		lienzo.setBounds(10, 11, 1390, 729);
 		lienzo.setBorder(BorderFactory.createLineBorder(Color.black, 2));
 		lienzo.setLayout(null);
 		lienzo.addMouseListener(this);
@@ -426,11 +477,11 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 	public void mouseClicked(MouseEvent e) {
 		switch(tool) {
 		case 2:	
-			figuras.add(new Figura(e.getX(),e.getY(),80,80,colorAct,grosor,tool));
+			figuras.add(new Figura(e.getX(),e.getY(),tamañoFig,tamañoFig,colorAct,grosor,tool,relleno));
 			repaint();
 		break;
 		case 3:
-			figuras.add(new Figura(e.getX(),e.getY(),80,80,colorAct,grosor,tool));
+			figuras.add(new Figura(e.getX(),e.getY(),tamañoFig,tamañoFig,colorAct,grosor,tool,relleno));
 			repaint();
 		break;
 		}
@@ -487,7 +538,7 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 			puntos.add(new puntosPer(e.getX(),e.getY(),colorAct,grosor));
 		}
 		if(tool==9) {
-			figuras.add(new Figura(e.getX(),e.getY(),80,80,Color.white,grosor,tool));
+			figuras.add(new Figura(e.getX(),e.getY(),tamañoFig,tamañoFig,Color.white,grosor,tool,relleno));
 			lienzo.repaint();
 		}
 	}
@@ -536,20 +587,24 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 			if (figuras.size()>0 ) {
 	    	   for (int i = 0; i < figuras.size(); i++) {
 	    		   Figura temp =figuras.get(i);
+	    		   g2.setColor(temp.c);
+    			   g2.setStroke(new BasicStroke(temp.g));
 	    		   if (temp.t ==2) {
-	    			   g2.setColor(temp.c);
-	    			   g2.setStroke(new BasicStroke(temp.g));
-	    			   g2.drawOval(temp.x, temp.y, 80, 80);
+	    			   if (temp.r) {
+		    			   g2.fillOval(temp.x, temp.y, temp.w, temp.h);
+	    			   }
+	    			   else {
+		    			   g2.drawOval(temp.x, temp.y, temp.w, temp.h);
+	    			   }   
 	    		   }
 	    		   else if(temp.t ==3) {
-	    			   g2.setColor(temp.c);
-	    			   g2.setStroke(new BasicStroke(temp.g));
-	    			   g2.drawRect(temp.x, temp.y, 80, 80);
+	    			   if (temp.r)
+	    				   g2.fillRect(temp.x, temp.y, temp.w, temp.h);
+	    			   else
+	    				   g2.drawRect(temp.x, temp.y, temp.w, temp.h);
 	    		   }
 	    		   else if(temp.t==9) {
-	    			   g2.setColor(temp.c);
-	    			   g2.setStroke(new BasicStroke(temp.g));
-	    			   g2.fillRect(temp.x, temp.y, 80, 80);
+	    			   g2.fillRect(temp.x, temp.y, temp.w, temp.h);
 	    		   }
 	    		   
 	    	   }
@@ -563,7 +618,8 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 		public int x,y,w,h,t;
 		public Color c;
 		public int g;
-		public Figura(int x, int y, int w, int h,Color c, int g,int t) {
+		public boolean r;
+		public Figura(int x, int y, int w, int h,Color c, int g,int t,boolean r) {
 			this.x=x;
 			this.y=y;
 			this.w=w;
@@ -571,6 +627,7 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 			this.t=t;
 			this.c=c;
 			this.g=g;
+			this.r=r;
 		}
 	}
 	
@@ -586,5 +643,4 @@ public class Paint extends JFrame implements MouseListener, MouseMotionListener 
 			this.g=g;
 		}
 	}
-
 }
