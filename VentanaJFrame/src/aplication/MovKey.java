@@ -3,6 +3,8 @@ package aplication;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -66,6 +68,18 @@ public class MovKey implements KeyListener {
 		frame.getContentPane().add(panel_2, BorderLayout.SOUTH);
 		JButton btnNewButton = new JButton("Reiniciar");
 		panel_2.add(btnNewButton);
+		btnNewButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				x=200;
+				y=200;
+				panelPrin.requestFocus();
+				panelPrin.repaint();
+				
+			}
+			
+		});
 	}
 	class panelDibujo extends JPanel{
 		public panelDibujo() {
@@ -104,11 +118,26 @@ public class MovKey implements KeyListener {
 		}
 		System.out.println(e.getKeyCode());
 		panelPrin.repaint();
+		zonaSeg();
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	public void zonaSeg() {
+		if (x < -20 ) {
+			x=panelPrin.getWidth()-20;
+		}
+		else if(x>panelPrin.getWidth()-20) {
+			x=-20;
+		}
+		else if(y>430) {
+			y=-3;
+		}
+		else if(y<-20) {
+			y=panelPrin.getHeight()-20;
+		}
 	}
 }
