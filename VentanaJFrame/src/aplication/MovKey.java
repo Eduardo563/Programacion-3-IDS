@@ -7,9 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import aplication.Paint.Figura;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 
@@ -20,7 +25,12 @@ public class MovKey implements KeyListener {
 
 	private JFrame frame;
 	int x=200, y=200;
+	private Player player=null;
+	private Player shadow=null;
 	panelDibujo panelPrin;
+	private ArrayList<Player> obstaculos = new ArrayList<Player>();
+	
+	Timer cronometro;
 
 	/**
 	 * Launch the application.
@@ -58,6 +68,10 @@ public class MovKey implements KeyListener {
 		panelPrin.addKeyListener(this);
 		panelPrin.setFocusable(true);
 		
+		player = new Player(200,200,40,40,Color.green);
+		shadow = new Player(200,200,40,40,Color.green);
+		obstaculos.add(new Player(150,350,220,30,Color.orange));
+		obstaculos.add(new Player(150,100,220,30,Color.orange));
 		
 		JPanel panel_1 = new JPanel();
 		frame.getContentPane().add(panel_1, BorderLayout.NORTH);
@@ -72,8 +86,8 @@ public class MovKey implements KeyListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				x=200;
-				y=200;
+				player.x=200;
+				player.y=200;
 				panelPrin.requestFocus();
 				panelPrin.repaint();
 				
@@ -92,7 +106,14 @@ public class MovKey implements KeyListener {
 			Graphics2D g2 = (Graphics2D) g;
 			
 			g2.setColor(Color.green);
-			g2.fillRect(x, y, 40, 40);
+			g2.fillRect(player.x, player.y, 40, 40);
+			
+			for (Player obs : obstaculos) {
+				g2.setColor(obs.color);
+				g2.fillRect(obs.x, obs.y, obs.w-5, obs.h-5);
+				
+			}
+			
 		}
 	}
 	@Override
@@ -103,22 +124,53 @@ public class MovKey implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		zonaSeg();
+		
+		Boolean m = true;
+		for (Player pared : obstaculos) {
+			if(player.colision(pared)) {
+				System.out.println("Colision detectada");
+				m=false;
+			}
+		}
+		
 		
 		if (e.getKeyCode()==38) {
-			y-=10;
+			if (m) {
+				player.y-=10;
+				shadow.y=player.y;
+				
+			}
+			else
+				player.y=shadow.y+15;
 		}
 		else if (e.getKeyCode()==37) {
-			x-=10;	
+			if (m) {
+				player.x-=10;
+				shadow.x=player.x;
+			}
+			else
+				player.x=shadow.x+15;
 		}
 		else if (e.getKeyCode()==39) {
-			x+=10;
+			if (m) {
+				player.x+=10;
+				shadow.x=player.x;
+			}
+			else
+				player.x=shadow.x-15;
 		}
 		else if (e.getKeyCode()==40) {
-			y+=10;
+			if (m) {
+				player.y+=10;
+				shadow.y=player.y;
+			}
+			else
+				player.y=shadow.y-15;
 		}
 		System.out.println(e.getKeyCode());
 		panelPrin.repaint();
-		zonaSeg();
+		
 	}
 
 	@Override
@@ -127,17 +179,41 @@ public class MovKey implements KeyListener {
 		
 	}
 	public void zonaSeg() {
-		if (x < -20 ) {
-			x=panelPrin.getWidth()-20;
+		if (player.x < -20 ) {
+			player.x=panelPrin.getWidth()-20;
 		}
-		else if(x>panelPrin.getWidth()-20) {
-			x=-20;
+		else if(player.x>panelPrin.getWidth()-20) {
+			player.x=-20;
 		}
-		else if(y>430) {
-			y=-3;
+		else if(player.y>430) {
+			player.y=-3;
 		}
-		else if(y<-20) {
-			y=panelPrin.getHeight()-20;
+		else if(player.y<-20) {
+			player.y=panelPrin.getHeight()-20;
+		}
+	}
+	
+	class  Player {
+		
+		int x, y, w, h;
+		Color color;
+		
+		
+		Player(int x, int y, int w, int  h, Color color){
+			this.x=x;
+			this.y=y;
+			this.w=w;
+			this.h=h;
+			this.color=color;
+		}
+		
+		public boolean colision(Player target) {
+				return 	(this.x < target.x + target.w &&
+	                this.x + this.w > target.x &&
+	                this.y < target.y + target.h &&
+	                this.y + this.h > target.y);
+					
+				
 		}
 	}
 }
