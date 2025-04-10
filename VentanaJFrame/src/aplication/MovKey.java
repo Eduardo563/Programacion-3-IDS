@@ -1,6 +1,7 @@
 package aplication;
 
 import java.awt.EventQueue;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -29,8 +30,12 @@ public class MovKey implements KeyListener {
 	private Player shadow=null;
 	panelDibujo panelPrin;
 	private ArrayList<Player> obstaculos = new ArrayList<Player>();
+	private int segundos,lastPress;
+	JLabel lblNewLabel;
+	Timer cronometro,moveAut;
+	int milisegundos=0;
+	int minutos =0;
 	
-	Timer cronometro;
 
 	/**
 	 * Launch the application.
@@ -75,7 +80,7 @@ public class MovKey implements KeyListener {
 		
 		JPanel panel_1 = new JPanel();
 		frame.getContentPane().add(panel_1, BorderLayout.NORTH);
-		JLabel lblNewLabel = new JLabel("0:00");
+		lblNewLabel = new JLabel("0:00");
 		panel_1.add(lblNewLabel);
 		
 		JPanel panel_2 = new JPanel();
@@ -86,15 +91,60 @@ public class MovKey implements KeyListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				reiniciarCrono();
+				moveAut.stop();
 				player.x=200;
 				player.y=200;
+				shadow.x=200;
+				shadow.y=200;
 				panelPrin.requestFocus();
 				panelPrin.repaint();
 				
 			}
 			
 		});
+		
+		cronometro = new Timer(100, new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            milisegundos += 100;
+	            if (milisegundos == 1000) {
+	                milisegundos = 0;
+	                segundos++;
+	                if (segundos == 60) {
+	                    segundos = 0;
+	                    minutos++;
+	                }
+	            }
+	            lblNewLabel.setText(minutos + ":" + segundos + " :" + milisegundos);
+	        }
+	    });
+		
+		
+		ActionListener automatizacion = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				zonaSeg();
+				update();
+				panelPrin.repaint();
+				
+				
+			}
+			
+		};
+		moveAut = new Timer(5,automatizacion);
 	}
+	
+	public void reiniciarCrono() {
+		cronometro.stop();
+		milisegundos=0;
+		segundos=0;
+		minutos=0;
+		lblNewLabel.setText("0:00");
+	}
+	
+	
 	class panelDibujo extends JPanel{
 		public panelDibujo() {
 			this.setBackground(Color.black);
@@ -110,7 +160,7 @@ public class MovKey implements KeyListener {
 			
 			for (Player obs : obstaculos) {
 				g2.setColor(obs.color);
-				g2.fillRect(obs.x, obs.y, obs.w-5, obs.h-5);
+				g2.fillRect(obs.x, obs.y, obs.w, obs.h);
 				
 			}
 			
@@ -124,50 +174,11 @@ public class MovKey implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		zonaSeg();
 		
-		Boolean m = true;
-		for (Player pared : obstaculos) {
-			if(player.colision(pared)) {
-				System.out.println("Colision detectada");
-				m=false;
-			}
-		}
-		
-		
-		if (e.getKeyCode()==38) {
-			if (m) {
-				player.y-=10;
-				shadow.y=player.y;
-				
-			}
-			else
-				player.y=shadow.y+15;
-		}
-		else if (e.getKeyCode()==37) {
-			if (m) {
-				player.x-=10;
-				shadow.x=player.x;
-			}
-			else
-				player.x=shadow.x+15;
-		}
-		else if (e.getKeyCode()==39) {
-			if (m) {
-				player.x+=10;
-				shadow.x=player.x;
-			}
-			else
-				player.x=shadow.x-15;
-		}
-		else if (e.getKeyCode()==40) {
-			if (m) {
-				player.y+=10;
-				shadow.y=player.y;
-			}
-			else
-				player.y=shadow.y-15;
-		}
+		cronometro.start();
+		moveAut.start();
+		lastPress = e.getKeyCode();
+		update();
 		System.out.println(e.getKeyCode());
 		panelPrin.repaint();
 		
@@ -178,19 +189,61 @@ public class MovKey implements KeyListener {
 		// TODO Auto-generated method stub
 		
 	}
-	public void zonaSeg() {
-		if (player.x < -20 ) {
-			player.x=panelPrin.getWidth()-20;
+	
+	public void update() {
+		boolean m = true;
+		
+		shadow.x=player.x;
+		shadow.y=player.y;
+		
+		
+		if (lastPress==38) {
+			player.y-=3;	
 		}
-		else if(player.x>panelPrin.getWidth()-20) {
+		else if (lastPress==37) {	
+			player.x-=3;
+		}
+		else if (lastPress==39) {
+			player.x+=3;
+		}
+		else if (lastPress==40) {
+			player.y+=3;
+		}
+		
+		for (Player pared : obstaculos) {
+			if(player.colision(pared)) {
+				System.out.println("Colision detectada");
+				m = false;
+			}
+		}
+		if (m) {
+			shadow.x=player.x;
+			shadow.y=player.y;
+		}
+		else {
+			player.x=shadow.x;
+			player.y=shadow.y;
+		}
+		if (!m) {
+			moveAut.stop();
+		}
+		
+	}
+	
+	public void zonaSeg() {
+		if (player.x+40 < 0) {
+			player.x=panelPrin.getWidth()-40;
+		}
+		else if(player.x+40>panelPrin.getWidth()) {
 			player.x=-20;
 		}
-		else if(player.y>430) {
-			player.y=-3;
+		else if(player.y+40>panelPrin.getHeight()) {
+			player.y=-20;
 		}
-		else if(player.y<-20) {
-			player.y=panelPrin.getHeight()-20;
+		else if(player.y+40 < 0) {
+			player.y+=panelPrin.getHeight();
 		}
+		panelPrin.repaint();
 	}
 	
 	class  Player {
